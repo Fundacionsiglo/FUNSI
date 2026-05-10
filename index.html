@@ -268,6 +268,44 @@ button{-webkit-appearance:none;appearance:none;}
 .frac .fn{border-bottom:2.5px solid currentColor;padding:0 4px 1px;font-size:.8em;}
 .frac .fd{padding:1px 4px 0;font-size:.8em;}
 
+/* ── APA — AYUDA PARA AVANZAR ── */
+.apa-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:400;display:flex;align-items:flex-end;justify-content:center;animation:apaFadeIn .25s ease;}
+@keyframes apaFadeIn{from{opacity:0}to{opacity:1}}
+.apa-panel{background:#fff;border-radius:28px 28px 0 0;padding:0 0 2rem;width:100%;max-width:430px;max-height:90vh;overflow-y:auto;animation:apaUp .4s cubic-bezier(.34,1.2,.64,1);box-shadow:0 -6px 40px rgba(0,0,0,.25);}
+@keyframes apaUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.apa-handle{width:44px;height:5px;background:#e0e0f0;border-radius:3px;margin:14px auto 0;}
+.apa-header{display:flex;align-items:center;gap:12px;padding:1rem 1.2rem .4rem;}
+.apa-funsi-wrap{flex-shrink:0;}
+.apa-funsi{width:52px;height:52px;filter:drop-shadow(0 4px 8px rgba(124,131,253,.3));animation:funsiFloat 3s ease-in-out infinite;}
+@keyframes funsiFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.apa-bubble{background:#f0edff;border:2px solid #c4b8ff;border-radius:6px 18px 18px 18px;padding:10px 14px;font-size:14px;font-weight:700;color:#4a3aaa;line-height:1.5;flex:1;}
+.apa-tag{display:flex;align-items:center;gap:8px;margin:.2rem 1.2rem .3rem;padding:.5rem .8rem;background:linear-gradient(135deg,#7c3aed,#a855f7);border-radius:10px;}
+.apa-tag-emoji{font-size:20px;}
+.apa-tag-text{font-size:11px;font-weight:900;color:#fff;letter-spacing:1px;text-transform:uppercase;}
+.apa-topic-title{font-size:20px;font-weight:900;color:#1a0a40;padding:.2rem 1.2rem .6rem;line-height:1.3;}
+/* PASOS */
+.apa-steps{padding:0 1.2rem;display:flex;flex-direction:column;gap:8px;margin-bottom:1rem;}
+.apa-step{display:flex;gap:10px;align-items:flex-start;background:#f8f7ff;border-radius:14px;padding:.75rem 1rem;border:1.5px solid #e8e4ff;}
+.apa-step-num{width:28px;height:28px;background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;flex-shrink:0;}
+.apa-step-text{font-size:14px;color:#2d1654;font-weight:700;line-height:1.5;padding-top:2px;}
+/* EJEMPLO */
+.apa-example{margin:0 1.2rem .8rem;background:#f0fdf4;border:2px solid #86efac;border-radius:16px;padding:.9rem 1rem;}
+.apa-ex-header{display:flex;align-items:center;gap:6px;margin-bottom:8px;}
+.apa-ex-emoji{font-size:20px;}
+.apa-ex-title{font-size:12px;font-weight:900;color:#16a34a;letter-spacing:1px;text-transform:uppercase;}
+.apa-ex-body{font-size:14px;color:#14532d;font-weight:700;line-height:1.9;font-family:monospace;}
+.apa-ex-step{display:flex;align-items:baseline;gap:6px;margin:2px 0;}
+.apa-ex-arrow{color:#16a34a;font-size:16px;}
+/* FÓRMULA */
+.apa-formula-box{margin:0 1.2rem .8rem;background:linear-gradient(135deg,#fef3c7,#fde68a);border:2px solid #fbbf24;border-radius:16px;padding:.9rem 1rem;}
+.apa-formula-header{display:flex;align-items:center;gap:6px;margin-bottom:6px;}
+.apa-formula-emoji{font-size:20px;}
+.apa-formula-title{font-size:12px;font-weight:900;color:#92400e;letter-spacing:1px;text-transform:uppercase;}
+.apa-formula-text{font-size:15px;color:#78350f;font-weight:900;line-height:1.7;font-family:monospace;}
+/* BOTÓN */
+.apa-ok-btn{display:block;width:calc(100% - 2.4rem);margin:0 1.2rem;background:linear-gradient(135deg,#7c3aed,#a855f7);border:none;border-radius:16px;padding:1rem;font-size:16px;font-weight:900;color:#fff;cursor:pointer;letter-spacing:.5px;box-shadow:0 4px 20px rgba(124,131,253,.4);}
+.apa-ok-btn:active{transform:scale(.97);}
+
 /* ── CONFETTI ── */
 .conf{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999;overflow:hidden;}
 .cp{position:absolute;top:-20px;border-radius:3px;}
@@ -476,6 +514,48 @@ button{-webkit-appearance:none;appearance:none;}
       <button onclick="doReset()" style="background:linear-gradient(135deg,#DC2626,#EF4444);color:#fff;border:none;border-radius:16px;padding:1rem;font-size:15px;font-weight:900;cursor:pointer;font-family:'Nunito',sans-serif;">Sí, reiniciar todo</button>
       <button onclick="closeReset()" class="btn-sec">Cancelar</button>
     </div>
+  </div>
+</div>
+
+<!-- ═══ APA PANEL ═══ -->
+<div id="apa-overlay" style="display:none;" class="apa-overlay" onclick="if(event.target===this)closeApa()">
+  <div class="apa-panel">
+    <div class="apa-handle"></div>
+    <div class="apa-header">
+      <div class="apa-funsi-wrap">
+        <svg class="apa-funsi" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="60" cy="65" r="42" fill="#7C3AED"/>
+          <ellipse cx="60" cy="72" rx="26" ry="20" fill="#A78BFA"/>
+          <circle cx="60" cy="38" r="28" fill="#F97316"/>
+          <polygon points="32,18 22,2 44,12" fill="#F97316"/>
+          <polygon points="88,18 98,2 76,12" fill="#F97316"/>
+          <polygon points="34,16 26,5 42,13" fill="#FCA5A5"/>
+          <polygon points="86,16 94,5 78,13" fill="#FCA5A5"/>
+          <ellipse cx="60" cy="38" rx="22" ry="20" fill="#FED7AA"/>
+          <circle cx="51" cy="33" r="5" fill="#1E1B4B"/>
+          <circle cx="69" cy="33" r="5" fill="#1E1B4B"/>
+          <circle cx="53" cy="31" r="2" fill="#fff"/>
+          <circle cx="71" cy="31" r="2" fill="#fff"/>
+          <ellipse cx="60" cy="41" rx="4" ry="3" fill="#EA580C"/>
+          <path d="M51 46 Q60 54 69 46" fill="none" stroke="#EA580C" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="44" cy="43" r="6" fill="#FCA5A5" opacity=".5"/>
+          <circle cx="76" cy="43" r="6" fill="#FCA5A5" opacity=".5"/>
+        </svg>
+      </div>
+      <div class="apa-bubble" id="apa-bubble">¡Hola! Te ayudo a entender 😊</div>
+    </div>
+    <div class="apa-tag"><span class="apa-tag-emoji">💡</span><span class="apa-tag-text">APA — Ayuda Para Avanzar</span></div>
+    <div class="apa-topic-title" id="apa-topic-title">Tema</div>
+    <div class="apa-steps" id="apa-steps"></div>
+    <div class="apa-example">
+      <div class="apa-ex-header"><span class="apa-ex-emoji">📝</span><span class="apa-ex-title">Ejemplo resuelto</span></div>
+      <div class="apa-ex-body" id="apa-ex-body"></div>
+    </div>
+    <div class="apa-formula-box">
+      <div class="apa-formula-header"><span class="apa-formula-emoji">⭐</span><span class="apa-formula-title">Para recordar</span></div>
+      <div class="apa-formula-text" id="apa-formula-text"></div>
+    </div>
+    <button class="apa-ok-btn" onclick="closeApa()">✓ ¡Entendí! Voy a intentarlo</button>
   </div>
 </div>
 
@@ -750,6 +830,7 @@ function startGame(lv, reinforceMode){
   gs={lv,score:0,lives:3,cur:0,qs:[],answered:false,correct:0,combo:1,maxCombo:1,
       timerID:null,timeLeft:TIMER,fastCount:0,reinforceMode,hintShown:false,
       diff:startDiff,consecutiveCorrect:0,consecutiveWrong:0};
+  gsApaErrors=0; apaShownForCurrent=false;
   gs.qs=Array.from({length:QPL},(_,i)=>makeQ(currentGrade.id,currentTopic,lv,i,reinforceMode,gs.diff));
   document.getElementById('hud-lv').textContent=TOPICS[currentTopic].name+' · Nivel '+lv+(reinforceMode?' 🔁':'');
   document.getElementById('hint-banner').classList.remove('show');
@@ -932,6 +1013,7 @@ function checkAns(key,btn,q){
     gs.cur++;
     if(gs.lives<=0||gs.cur>=QPL) showResult();
     else {
+      // NO reseteamos gsApaErrors aquí — se acumula durante toda la ronda
       gs.qs[gs.cur]=makeQ(currentGrade.id,currentTopic,gs.lv,gs.cur,gs.reinforceMode,gs.diff);
       renderQ();
     }
@@ -1024,15 +1106,15 @@ function showResult(){
     rb.className='rec-box go-down';ri.textContent='💙';
     rt.textContent='Repasemos desde la base';
     rd.textContent='¡No te preocupes! Funsi te propone repasar el Nivel '+prevLv+' con pistas.';
-    actions.innerHTML='<button class="btn-pp" onclick="startGame('+prevLv+',true)">💙 Repasar Nivel '+prevLv+' con ayuda</button>'
-      +'<button class="btn-sec" onclick="startGame('+sameLv+',true)">💡 Intentar con pistas</button>'
+    actions.innerHTML='<button class="btn-pp" onclick="showApaFromResult(\''+currentTopic+'\',2)">💡 Ver explicación de Funsi</button>'
+      +'<button class="btn-sec" onclick="startGame('+prevLv+',true)">💙 Repasar Nivel '+prevLv+'</button>'
       +'<button class="btn-sec" onclick="go(\'s-dash\')">Dashboard</button>';
   } else if(stars===0){
     rb.className='rec-box go-down';ri.textContent='💡';
     rt.textContent='¡Intentalo de nuevo!';
-    rd.textContent='Necesitás al menos 2 respuestas para ganar una estrella. ¡Dale!';
-    actions.innerHTML='<button class="btn-pp" onclick="startGame('+sameLv+',true)">💡 Intentar con pistas</button>'
-      +'<button class="btn-sec" onclick="startGame('+sameLv+',false)">🔄 Sin pistas</button>'
+    rd.textContent='Necesitás al menos 2 respuestas para ganar una estrella. ¡Funsi te ayuda!';
+    actions.innerHTML='<button class="btn-pp" onclick="showApaFromResult(\''+currentTopic+'\',1)">💡 ¿Cómo se hace? Funsi explica</button>'
+      +'<button class="btn-sec" onclick="startGame('+sameLv+',false)">🔄 Intentar de nuevo</button>'
       +'<button class="btn-sec" onclick="go(\'s-dash\')">Dashboard</button>';
   } else {
     rb.className='rec-box stay';ri.textContent='💛';
@@ -1062,11 +1144,7 @@ function showResult(){
 /* ═══════════════════════════
    ADAPTIVE ENGINE
 ═══════════════════════════ */
-function getP(gid,tid){
-  let k=gid+"-"+tid;
-  if(!prog[k]) prog[k]={ml:1,stars:[0,0,0,0,0],attempts:0,totalCorrect:0,streak:0,badStreak:0,lastStars:null,xp:0,diff:1};
-  return prog[k];
-}
+
 function topicAccuracy(gid,tid){
   let p=getP(gid,tid);
   if(p.attempts===0) return null;
@@ -1401,7 +1479,333 @@ document.addEventListener('visibilitychange', function(){
   }
 });
 
+/* ═══════════════════════════
+   APAs — AYUDAS PARA AVANZAR
+   Lenguaje claro para primaria
+═══════════════════════════ */
+
 loadP();
+
+/* ═══ APAs — AYUDAS PARA AVANZAR ═══ */
+var APA_DATA={
+
+  suma:{title:'Cómo sumar',
+    b1:'¡Sumar es juntar! Cuando sumás, reunís dos cantidades y contás cuánto hay en total 😊',
+    s1:[
+      {n:'1',t:'Pensá en el primer número como algo que ya tenés'},
+      {n:'2',t:'El segundo número es lo que te dan o agregás'},
+      {n:'3',t:'Contás todo junto y ese total es la respuesta'},
+    ],
+    e1:[
+      {a:false,t:'Tengo 3 caramelos 🍬🍬🍬'},
+      {a:false,t:'Me regalan 4 caramelos más 🍬🍬🍬🍬'},
+      {a:true, t:'Los junto todos y cuento: 1, 2, 3, 4, 5, 6, 7'},
+      {a:true, t:'3 + 4 = 7 ✅'},
+    ],
+    f1:'3 + 4 = 7\nEmpezá desde el número más grande y seguí contando:\n"3... 4, 5, 6, 7" → ¡7!',
+    b2:'¡Probemos con los dedos! Es otra forma muy fácil 😊',
+    s2:[
+      {n:'1',t:'Levantá tantos dedos como dice el primer número'},
+      {n:'2',t:'Seguí contando en voz alta tantas veces como dice el segundo número'},
+      {n:'3',t:'El último número que dijiste es la suma'},
+    ],
+    e2:[
+      {a:false,t:'6 + 3 = ?'},
+      {a:true, t:'Levanto 6 dedos. Cuento 3 más:'},
+      {a:true, t:'"6... 7, 8, 9"'},
+      {a:true, t:'6 + 3 = 9 ✅'},
+    ],
+    f2:'Truco para no equivocarte:\nEmpezá siempre desde el número más grande\ny contá hacia adelante el número más chico',
+  },
+
+  resta:{title:'Cómo restar',
+    b1:'¡Restar es quitar! Tenés una cantidad, sacás algunas y ves cuántas quedan 😊',
+    s1:[
+      {n:'1',t:'Imaginá que tenés una cantidad de cosas'},
+      {n:'2',t:'Quitás algunas (las tachás o las escondés)'},
+      {n:'3',t:'Contás las que quedan — ese es el resultado'},
+    ],
+    e1:[
+      {a:false,t:'Tengo 8 galletitas 🍪🍪🍪🍪🍪🍪🍪🍪'},
+      {a:false,t:'Me como 3 🍪🍪🍪 (las tacho)'},
+      {a:true, t:'Cuento las que quedan: 🍪🍪🍪🍪🍪'},
+      {a:true, t:'8 − 3 = 5 ✅'},
+    ],
+    f1:'8 − 3 = 5\nComprobación: si 5 + 3 = 8... ¡está bien!\nSiempre podés verificar la resta con una suma',
+    b2:'¡Otra forma: contar hacia atrás! 😊',
+    s2:[
+      {n:'1',t:'Decí el número grande en voz alta'},
+      {n:'2',t:'Contá hacia atrás tantos números como dice el que restás'},
+      {n:'3',t:'El último número que dijiste es el resultado'},
+    ],
+    e2:[
+      {a:false,t:'7 − 4 = ?'},
+      {a:true, t:'Digo 7 y cuento 4 hacia atrás:'},
+      {a:true, t:'"7... 6, 5, 4, 3"'},
+      {a:true, t:'7 − 4 = 3 ✅'},
+    ],
+    f2:'Truco: contá hacia atrás desde el número grande\n"7... 6, 5, 4, 3" → ¡3!\nVerificá: 3 + 4 = 7 ✓',
+  },
+
+  multiplicacion:{title:'Cómo multiplicar',
+    b1:'¡Multiplicar es sumar el mismo número varias veces seguidas! Es una suma más rápida 😊',
+    s1:[
+      {n:'1',t:'El primer número dice CUÁNTAS veces repetís la suma'},
+      {n:'2',t:'El segundo número es LO QUE sumás cada vez'},
+      {n:'3',t:'Sumá ese número tantas veces como indica el primero'},
+    ],
+    e1:[
+      {a:false,t:'Hay 3 platos con 4 frutas cada uno 🍎🍎🍎🍎'},
+      {a:true, t:'Plato 1: 4 frutas'},
+      {a:true, t:'Plato 2: 4 frutas'},
+      {a:true, t:'Plato 3: 4 frutas'},
+      {a:true, t:'4 + 4 + 4 = 12 → 3 × 4 = 12 ✅'},
+    ],
+    f1:'3 × 4 = 4 + 4 + 4 = 12\nMultiplicar es sumar el mismo número varias veces\nEl orden no cambia el resultado: 3×4 = 4×3',
+    b2:'¡Memorizá las tablas con un truco para cada una! 😊',
+    s2:[
+      {n:'1',t:'La tabla del 2: es siempre el doble del número (2×6=12, es 6+6)'},
+      {n:'2',t:'La tabla del 5: siempre termina en 0 o en 5 (5, 10, 15, 20...)'},
+      {n:'3',t:'La tabla del 10: es el número con un cero al final (10, 20, 30...)'},
+    ],
+    e2:[
+      {a:false,t:'¿Cuánto es 6 × 5?'},
+      {a:true, t:'Tabla del 5: 5, 10, 15, 20, 25, 30'},
+      {a:true, t:'Conté 6 números: el 6to es 30'},
+      {a:true, t:'6 × 5 = 30 ✅'},
+    ],
+    f2:'Tabla del 2: siempre es el número + el número\nTabla del 5: termina en 0 o 5\nTabla del 10: el número con un 0 atrás',
+  },
+
+  division:{title:'Cómo dividir',
+    b1:'¡Dividir es repartir en partes iguales! Como cuando repartís figuritas entre amigos 😊',
+    s1:[
+      {n:'1',t:'Tenés una cantidad de cosas para repartir'},
+      {n:'2',t:'El segundo número dice entre cuántos las repartís'},
+      {n:'3',t:'Repartís de a una por vez hasta terminar y contás cuántas le tocaron a cada uno'},
+    ],
+    e1:[
+      {a:false,t:'Tengo 12 lápices para repartir entre 4 chicos ✏️'},
+      {a:true, t:'Le doy 1 a cada uno: quedan 8'},
+      {a:true, t:'Le doy 1 a cada uno: quedan 4'},
+      {a:true, t:'Le doy 1 a cada uno: quedan 0'},
+      {a:true, t:'Le tocaron 3 a cada uno → 12 ÷ 4 = 3 ✅'},
+    ],
+    f1:'12 ÷ 4 = 3\nComprobación: 3 × 4 = 12 ✓\nDividir es lo contrario de multiplicar',
+    b2:'¡Usá la tabla de multiplicar al revés! 😊',
+    s2:[
+      {n:'1',t:'Preguntate: ¿cuántas veces entra el número chico en el grande?'},
+      {n:'2',t:'Buscá en la tabla del número chico hasta llegar al número grande'},
+      {n:'3',t:'¿En qué lugar de la tabla lo encontraste? Ese es el resultado'},
+    ],
+    e2:[
+      {a:false,t:'20 ÷ 5 = ?'},
+      {a:true, t:'Tabla del 5: 5, 10, 15, 20'},
+      {a:true, t:'El 20 está en el 4to lugar de la tabla'},
+      {a:true, t:'20 ÷ 5 = 4 ✅'},
+    ],
+    f2:'Truco: usá la tabla del número que divide\n5, 10, 15, 20 → el 20 es el 4to → 20÷5=4\nVerificá: 4 × 5 = 20 ✓',
+  },
+
+  numeros:{title:'Los Números y sus relaciones',
+    b1:'¡Los números tienen vecinos y relaciones entre ellos que es bueno conocer! 😊',
+    s1:[
+      {n:'1',t:'Cada número tiene un vecino anterior (el que viene antes) y uno siguiente (el que viene después)'},
+      {n:'2',t:'El doble de un número es ese número sumado dos veces'},
+      {n:'3',t:'La mitad de un número es dividirlo en dos partes iguales'},
+    ],
+    e1:[
+      {a:false,t:'¿El doble de 6?'},
+      {a:true, t:'6 + 6 = 12 → el doble de 6 es 12 ✅'},
+      {a:false,t:'¿El número anterior al 9?'},
+      {a:true, t:'Cuento: ...7, 8, 9 → el anterior es 8 ✅'},
+    ],
+    f1:'Anterior de N = N − 1 (el que está antes)\nSiguiente de N = N + 1 (el que viene después)\nDoble = sumar el número dos veces',
+    b2:'¡La mitad y el doble son contrarios! 😊',
+    s2:[
+      {n:'1',t:'La mitad de un número es dividirlo en dos partes exactamente iguales'},
+      {n:'2',t:'Solo los números pares tienen mitad exacta (2, 4, 6, 8, 10...)'},
+      {n:'3',t:'Si el doble de un número es N, la mitad de N es ese número'},
+    ],
+    e2:[
+      {a:false,t:'¿La mitad de 14?'},
+      {a:true, t:'Reparto 14 en 2 partes iguales: 7 y 7'},
+      {a:true, t:'La mitad de 14 es 7 ✅'},
+      {a:false,t:'Comprobación:'},
+      {a:true, t:'7 + 7 = 14 ✓ ¡Correcto!'},
+    ],
+    f2:'Doble de N = N + N\nMitad de N = N ÷ 2\nPares: 2, 4, 6, 8, 10... (tienen mitad exacta)\nImpares: 1, 3, 5, 7, 9... (no tienen mitad exacta)',
+  },
+
+  fracciones:{title:'Las Fracciones',
+    b1:'¡Una fracción es una parte de algo que está dividido en partes iguales! Como una pizza 🍕 😊',
+    s1:[
+      {n:'1',t:'El número de abajo dice en cuántas partes iguales está cortado el entero'},
+      {n:'2',t:'El número de arriba dice cuántas partes tomás'},
+      {n:'3',t:'Para sumar fracciones con el mismo número abajo: sumás solo los de arriba'},
+    ],
+    e1:[
+      {a:false,t:'Una pizza cortada en 4 partes iguales 🍕'},
+      {a:false,t:'Comés 1/4 y después comés 2/4 más'},
+      {a:true, t:'Arriba: 1 + 2 = 3 (partes comidas)'},
+      {a:true, t:'Abajo: sigue siendo 4 (partes totales)'},
+      {a:true, t:'1/4 + 2/4 = 3/4 ✅'},
+    ],
+    f1:'El número de abajo = cuántas partes tiene el entero\nEl número de arriba = cuántas partes tomás\n1/2 = mitad | 1/4 = un cuarto | 3/4 = tres cuartos',
+    b2:'¡Las fracciones también se pueden comparar! 😊',
+    s2:[
+      {n:'1',t:'Si el número de abajo es más grande, cada parte es más chica'},
+      {n:'2',t:'1/2 es más grande que 1/4 porque la pizza está cortada en menos partes'},
+      {n:'3',t:'Fracciones equivalentes son distintas formas de decir lo mismo: 1/2 = 2/4'},
+    ],
+    e2:[
+      {a:false,t:'¿Es lo mismo 1/2 que 2/4?'},
+      {a:true, t:'1/2: pizza en 2 partes, tomo 1 → la mitad'},
+      {a:true, t:'2/4: pizza en 4 partes, tomo 2 → la mitad'},
+      {a:true, t:'¡Son iguales! 1/2 = 2/4 ✅'},
+    ],
+    f2:'1/2 = 2/4 = 3/6 (todas son la mitad)\nCuanto más grande el número de abajo,\nmás chica es cada parte',
+  },
+
+  decimales:{title:'Los Números con Coma',
+    b1:'¡Los números con coma sirven para expresar cantidades que están entre dos números enteros! Como los precios 💰 😊',
+    s1:[
+      {n:'1',t:'La coma separa los enteros (izquierda) de las partes (derecha)'},
+      {n:'2',t:'El primer número después de la coma son los décimos — 10 décimos forman 1 entero'},
+      {n:'3',t:'Para sumar: siempre poné las comas una abajo de la otra'},
+    ],
+    e1:[
+      {a:false,t:'Un jugo cuesta $2.50 y una manzana $1.30 🍎'},
+      {a:true, t:'Enteros: $2 + $1 = $3'},
+      {a:true, t:'Décimos: 50 + 30 = 80 centavos'},
+      {a:true, t:'Total: $3.80 ✅'},
+    ],
+    f1:'0.5 = cincuenta centésimos = la mitad\n0.25 = veinticinco centésimos = un cuarto\nAlineá las comas para sumar o restar',
+    b2:'¡Los números con coma y las fracciones dicen lo mismo! 😊',
+    s2:[
+      {n:'1',t:'0.5 es lo mismo que 1/2 (la mitad)'},
+      {n:'2',t:'0.25 es lo mismo que 1/4 (un cuarto)'},
+      {n:'3',t:'Podés pasar de fracción a decimal dividiendo arriba por abajo'},
+    ],
+    e2:[
+      {a:false,t:'¿Cuánto es 1/4 en decimal?'},
+      {a:true, t:'1 ÷ 4 = 0.25'},
+      {a:true, t:'1/4 = 0.25 ✅'},
+      {a:false,t:'¿Y 3/4?'},
+      {a:true, t:'3 ÷ 4 = 0.75 → 3/4 = 0.75 ✅'},
+    ],
+    f2:'0.5 = 1/2 (mitad)\n0.25 = 1/4 (cuarto)\n0.75 = 3/4 (tres cuartos)\n0.1 = 1/10 (un décimo)',
+  },
+
+  porcentajes:{title:'Los Porcentajes',
+    b1:'¡El porcentaje te dice cuántas partes de cada 100 tomás! Como los descuentos en las tiendas 🏪 😊',
+    s1:[
+      {n:'1',t:'100% significa el total completo — nada falta'},
+      {n:'2',t:'50% es la mitad — como si dividieras algo en 2 partes iguales'},
+      {n:'3',t:'Para calcular el 10% de algo, dividís ese algo por 10'},
+    ],
+    e1:[
+      {a:false,t:'Una remera cuesta $100. Hay un 50% de descuento 👕'},
+      {a:true, t:'50% = la mitad'},
+      {a:true, t:'$100 ÷ 2 = $50 de descuento'},
+      {a:true, t:'La remera queda en $50 ✅'},
+    ],
+    f1:'100% = todo | 50% = la mitad\n25% = un cuarto | 10% = una décima parte\n10% de N = N ÷ 10',
+    b2:'¡Podés calcular cualquier porcentaje con el truco del 10%! 😊',
+    s2:[
+      {n:'1',t:'Calculás el 10% dividiendo por 10'},
+      {n:'2',t:'Para el 20%: multiplicás el 10% por 2'},
+      {n:'3',t:'Para el 30%: multiplicás el 10% por 3. ¡Y así con todos!'},
+    ],
+    e2:[
+      {a:false,t:'¿El 30% de $200?'},
+      {a:true, t:'Primero calculo el 10%: $200 ÷ 10 = $20'},
+      {a:true, t:'30% = 3 veces el 10%'},
+      {a:true, t:'$20 × 3 = $60'},
+      {a:true, t:'El 30% de $200 es $60 ✅'},
+    ],
+    f2:'10% de N = N ÷ 10\n20% = 10% × 2 | 30% = 10% × 3\n50% = N ÷ 2 | 25% = N ÷ 4',
+  },
+
+  expresiones:{title:'Orden para resolver operaciones',
+    b1:'¡Cuando hay varias operaciones en un mismo ejercicio, existe un orden fijo para resolverlas! 😊',
+    s1:[
+      {n:'1',t:'Primero siempre lo que está entre paréntesis ( )'},
+      {n:'2',t:'Después las multiplicaciones × y las divisiones ÷'},
+      {n:'3',t:'Al final las sumas + y las restas −'},
+    ],
+    e1:[
+      {a:false,t:'2 × 3 + 4 = ?'},
+      {a:true, t:'Primero la multiplicación: 2 × 3 = 6'},
+      {a:true, t:'Después la suma: 6 + 4 = 10'},
+      {a:true, t:'= 10 ✅'},
+    ],
+    f1:'Orden fijo: ( ) primero → × y ÷ → + y −\nSi no respetás el orden, el resultado cambia',
+    b2:'¡Los paréntesis cambian todo! Mirá este ejemplo 😊',
+    s2:[
+      {n:'1',t:'Los paréntesis indican que eso se resuelve PRIMERO, antes que cualquier otra cosa'},
+      {n:'2',t:'El mismo ejercicio con y sin paréntesis puede dar resultados muy distintos'},
+      {n:'3',t:'Siempre fijate si hay paréntesis antes de empezar a resolver'},
+    ],
+    e2:[
+      {a:false,t:'Con paréntesis: 2 × (3 + 4) = ?'},
+      {a:true, t:'Primero el paréntesis: 3 + 4 = 7'},
+      {a:true, t:'Después la multiplicación: 2 × 7 = 14'},
+      {a:true, t:'= 14 ✅'},
+      {a:false,t:'Sin paréntesis: 2 × 3 + 4 = 6 + 4 = 10 (¡distinto!)'},
+    ],
+    f2:'Con ( ): 2 × (3+4) = 2 × 7 = 14\nSin ( ): 2 × 3 + 4 = 6 + 4 = 10\n¡Los paréntesis cambian el resultado!',
+  },
+
+  potencias:{title:'Las Potencias',
+    b1:'¡Una potencia es multiplicar un número por sí mismo varias veces! 😊',
+    s1:[
+      {n:'1',t:'El número grande (la base) es el que multiplicás'},
+      {n:'2',t:'El numerito chico de arriba (el exponente) dice cuántas veces multiplicás la base por sí misma'},
+      {n:'3',t:'Multiplicás la base tantas veces como indica el exponente'},
+    ],
+    e1:[
+      {a:false,t:'2³ = ?'},
+      {a:true, t:'La base es 2, el exponente es 3'},
+      {a:true, t:'Multiplico 2 por sí mismo 3 veces:'},
+      {a:true, t:'2 × 2 × 2'},
+      {a:true, t:'= 4 × 2 = 8 → 2³ = 8 ✅'},
+    ],
+    f1:'2¹ = 2 | 2² = 4 | 2³ = 8 | 2⁴ = 16\n10¹ = 10 | 10² = 100 | 10³ = 1000\nEl exponente dice CUÁNTAS veces multiplicás',
+    b2:'¡Las potencias de 10 son muy fáciles de recordar! 😊',
+    s2:[
+      {n:'1',t:'10¹ = 10 (un cero)'},
+      {n:'2',t:'10² = 100 (dos ceros)'},
+      {n:'3',t:'10³ = 1000 (tres ceros) — ¡el exponente te dice cuántos ceros tiene el resultado!'},
+    ],
+    e2:[
+      {a:false,t:'¿Cuánto es 10⁴?'},
+      {a:true, t:'El exponente es 4 → el resultado tiene 4 ceros'},
+      {a:true, t:'10⁴ = 10.000 ✅'},
+      {a:false,t:'¿Y 3²?'},
+      {a:true, t:'3 × 3 = 9 → 3² = 9 ✅'},
+    ],
+    f2:'Potencias de 10: el exponente = cantidad de ceros\n10¹=10 | 10²=100 | 10³=1000\n¡El número más el exponente hacen el resultado!',
+  },
+
+};
+function showApaFromResult(topic,strategy){
+  var d=APA_DATA[topic];if(!d){return;}sndClick();
+  var bubble=strategy===1?d.b1:d.b2;
+  var steps=strategy===1?d.s1:d.s2;
+  var example=strategy===1?d.e1:d.e2;
+  var formula=strategy===1?d.f1:d.f2;
+  document.getElementById('apa-bubble').textContent=bubble;
+  document.getElementById('apa-topic-title').textContent=(strategy===1?'📚 ':'🌟 Otra perspectiva: ')+d.title;
+  var stEl=document.getElementById('apa-steps');stEl.innerHTML='';
+  steps.forEach(function(s){stEl.innerHTML+='<div class="apa-step"><div class="apa-step-num">'+s.n+'</div><div class="apa-step-text">'+s.t+'</div></div>';});
+  var exEl=document.getElementById('apa-ex-body');exEl.innerHTML='';
+  example.forEach(function(l){exEl.innerHTML+='<div class="apa-ex-step">'+(l.a?'<span class="apa-ex-arrow">→</span>':'<span style="min-width:18px;font-size:14px">▶</span>')+'<span>'+l.t+'</span></div>';});
+  document.getElementById('apa-formula-text').innerHTML=formula.replace(/\n/g,'<br>');
+  document.getElementById('apa-overlay').style.display='flex';
+}
+function closeApa(){document.getElementById('apa-overlay').style.display='none';}
+
 </script>
 </body>
 </html>
