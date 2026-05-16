@@ -435,7 +435,10 @@ button{-webkit-appearance:none;appearance:none;}
           <span class="diff-pill" id="diff-pill">🌱 Inicio</span>
           <span style="font-size:11px;color:rgba(255,255,255,.5);font-weight:700;" id="q-num-hud">1/6</span>
         </div>
-        <div class="timer-bar"><div class="timer-fill" id="timer-fill" style="width:100%"></div></div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div class="timer-bar" style="flex:1"><div class="timer-fill" id="timer-fill" style="width:100%"></div></div>
+          <button id="no-timer-btn" onclick="toggleNoTimer()" title="Anular tiempo" style="background:rgba(255,255,255,.12);border:none;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:800;color:rgba(255,255,255,.7);cursor:pointer;white-space:nowrap;font-family:'Nunito',sans-serif;transition:background .2s;">⏸ Sin tiempo</button>
+        </div>
       </div>
       <div class="game-funsi-row">
         <svg class="mini-funsi-svg" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
@@ -822,6 +825,24 @@ function makeQ(g, topic, lv, idx, easy, diff){
    GAME STATE & ADAPTIVE DIFF
 ═══════════════════════════ */
 let gs={lv:1,score:0,lives:3,cur:0,qs:[],answered:false,correct:0,combo:1,maxCombo:1,timerID:null,timeLeft:TIMER,fastCount:0,reinforceMode:false,hintShown:false,diff:1,consecutiveCorrect:0,consecutiveWrong:0};
+let noTimerMode=false;
+function toggleNoTimer(){
+  noTimerMode=!noTimerMode;
+  var btn=document.getElementById('no-timer-btn');
+  var bar=document.getElementById('timer-fill');
+  if(noTimerMode){
+    if(gs.timerID){clearInterval(gs.timerID);gs.timerID=null;}
+    btn.textContent='▶ Con tiempo';
+    btn.style.background='rgba(252,211,77,.25)';
+    btn.style.color='#FCD34D';
+    if(bar){bar.style.width='100%';bar.style.background='rgba(252,211,77,.4)';}
+  } else {
+    btn.textContent='⏸ Sin tiempo';
+    btn.style.background='rgba(255,255,255,.12)';
+    btn.style.color='rgba(255,255,255,.7)';
+    if(!gs.answered) startTimer();
+  }
+}
 
 function startGame(lv, reinforceMode){
   if(gs.timerID) clearInterval(gs.timerID);
@@ -830,6 +851,9 @@ function startGame(lv, reinforceMode){
   gs={lv,score:0,lives:3,cur:0,qs:[],answered:false,correct:0,combo:1,maxCombo:1,
       timerID:null,timeLeft:TIMER,fastCount:0,reinforceMode,hintShown:false,
       diff:startDiff,consecutiveCorrect:0,consecutiveWrong:0};
+  noTimerMode=false;
+  var nb=document.getElementById('no-timer-btn');
+  if(nb){nb.textContent='⏸ Sin tiempo';nb.style.background='rgba(255,255,255,.12)';nb.style.color='rgba(255,255,255,.7)';}
   gsApaErrors=0; apaShownForCurrent=false;
   gs.qs=Array.from({length:QPL},(_,i)=>makeQ(currentGrade.id,currentTopic,lv,i,reinforceMode,gs.diff));
   document.getElementById('hud-lv').textContent=TOPICS[currentTopic].name+' · Nivel '+lv+(reinforceMode?' 🔁':'');
@@ -928,6 +952,7 @@ function renderQ(){
 }
 
 function startTimer(){
+  if(noTimerMode) return;
   if(gs.timerID) clearInterval(gs.timerID);
   gs.timeLeft=TIMER; updateTimerBar();
   gs.timerID=setInterval(()=>{
