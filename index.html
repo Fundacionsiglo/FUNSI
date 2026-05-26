@@ -9,20 +9,11 @@
 <meta name="theme-color" content="#0d0c18">
 <meta name="mobile-web-app-capable" content="yes">
 <title>Funsi — Matemática Adaptativa</title>
-<link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
-<script>
-  if('serviceWorker' in navigator){
-    window.addEventListener('load', function(){
-      navigator.serviceWorker.register('/sw.js')
-        .then(function(reg){ console.log('SW registrado:', reg.scope); })
-        .catch(function(err){ console.log('SW error:', err); });
-    });
-  }
-</script>
+
 <style>
 :root{
   --bg:#0d0c18;--card:#1a1830;--card2:#211e38;
@@ -310,6 +301,33 @@ button{-webkit-appearance:none;appearance:none;}
 .conf{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999;overflow:hidden;}
 .cp{position:absolute;top:-20px;border-radius:3px;}
 @keyframes cfFall{to{transform:translateY(115vh)rotate(720deg);opacity:0;}}
+.mundial-btn{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,#005c38,#003d27);border:2px solid #ffd700;border-radius:var(--r);padding:1rem 1.2rem;cursor:pointer;margin:0 0 .8rem;width:100%;transition:transform .12s;box-shadow:0 4px 20px rgba(0,92,56,.5);}
+.mundial-btn:active{transform:scale(.97);}
+.mundial-btn-left{display:flex;align-items:center;gap:12px;}
+.mundial-btn-emoji{font-size:30px;}
+.mundial-btn-title{font-size:17px;font-weight:900;color:#ffd700;}
+.mundial-btn-sub{font-size:11px;color:rgba(255,215,0,.65);font-weight:700;margin-top:2px;}
+.mundial-btn-arr{font-size:22px;color:#ffd700;font-weight:900;}
+.mundial-header{background:linear-gradient(135deg,#005c38,#003d27);padding:1.2rem 1rem 1rem;border-bottom:2px solid #ffd700;text-align:center;}
+.mundial-title{font-size:22px;font-weight:900;color:#ffd700;text-shadow:0 0 10px rgba(255,215,0,.3);}
+.mundial-sub{font-size:11px;color:rgba(255,215,0,.6);margin-top:3px;font-weight:700;}
+.mq-wrap{background:var(--card);border-radius:var(--r);padding:0;margin:1rem;border:2px solid rgba(255,215,0,.2);overflow:hidden;}
+.mq-info{background:rgba(255,215,0,.07);border-bottom:1px solid rgba(255,215,0,.15);padding:1rem 1.1rem;}
+.mq-info-tag{font-size:10px;font-weight:800;color:#ffd700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:5px;}
+.mq-info-text{font-size:14px;color:var(--text);font-weight:700;line-height:1.7;}
+.mq-info-text b{color:#ffd700;}
+.mq-pregunta{padding:1rem 1.1rem 1.2rem;}
+.mq-pregunta-tag{font-size:10px;font-weight:800;color:var(--pp);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:5px;}
+.mq-text{font-size:20px;font-weight:900;color:var(--text);margin-bottom:1rem;line-height:1.4;}
+.mundial-hud{background:linear-gradient(135deg,#003d27,#005c38);border-bottom:2px solid #ffd700;padding:.8rem 1rem;}
+.mr-panel{background:linear-gradient(180deg,#003d27,#001a10);border:2px solid #ffd700;border-radius:var(--r);padding:1.6rem 1.4rem;text-align:center;margin:1rem;}
+.mr-emoji{font-size:58px;margin-bottom:.3rem;}
+.mr-title{font-size:21px;font-weight:900;color:#ffd700;margin-bottom:.3rem;}
+.mr-score{font-size:46px;font-weight:900;color:#fff;margin:.4rem 0;}
+.mr-sub{font-size:13px;color:rgba(255,215,0,.65);margin-bottom:1rem;}
+.m-notimer-btn{background:rgba(255,215,0,.08);border:1px solid rgba(255,215,0,.25);border-radius:8px;padding:5px 12px;font-size:11px;font-weight:800;color:rgba(255,215,0,.7);cursor:pointer;font-family:inherit;transition:all .15s;}
+.m-notimer-btn:active{opacity:.7;}
+.m-notimer-btn.off{background:rgba(255,80,80,.1);border-color:rgba(255,80,80,.3);color:rgba(255,80,80,.7);}
 </style>
 </head>
 <body>
@@ -365,6 +383,18 @@ button{-webkit-appearance:none;appearance:none;}
       <div class="sec-sub">Bienvenidos a Matemática Adaptativa.<br>Elegí tu grado para empezar.</div>
       <div class="grade-grid" id="grade-grid"></div>
     </div>
+      <div style="padding:0 0 .5rem;">
+        <button class="mundial-btn" onclick="sndClick();go('s-mundial-game');startMundialGame()">
+          <div class="mundial-btn-left">
+            <span class="mundial-btn-emoji">⚽</span>
+            <div>
+              <div class="mundial-btn-title">MODO MUNDIAL 2026</div>
+              <div class="mundial-btn-sub">¡Matemática con datos reales del Mundial!</div>
+            </div>
+          </div>
+          <span class="mundial-btn-arr">›</span>
+        </button>
+      </div>
     <div id="badge-shelf-home" style="margin-bottom:1.5rem;"></div>
   </div>
 
@@ -1831,6 +1861,163 @@ function showApaFromResult(topic,strategy){
 }
 function closeApa(){document.getElementById('apa-overlay').style.display='none';}
 
+
+/* ═══ MODO MUNDIAL 2026 ═══ */
+var MQ=[
+{info:'<b>Argentina está en el Grupo J</b> del Mundial 2026 junto a <b>Argelia, Austria y Jordania</b>. El torneo tiene 12 grupos con 4 equipos cada uno.',q:'¿Cuántos equipos participan en total en el Mundial 2026?',answer:'48',opts:['48','32','40','44']},
+{info:'<b>Argentina debuta el 16 de junio</b> contra Argelia en el Arrowhead Stadium de Kansas. Su segundo partido es el <b>22 de junio</b> contra Austria en Dallas.',q:'¿Cuántos días pasan entre el debut (16/6) y el segundo partido (22/6)?',answer:'6',opts:['6','5','7','8']},
+{info:'Argentina juega <b>3 partidos</b> en la fase de grupos. Si gana los 3, obtiene <b>3 puntos por cada victoria</b>.',q:'Si Argentina gana los 3 partidos del grupo, ¿cuántos puntos acumula?',answer:'9',opts:['9','6','8','7']},
+{info:'En este Mundial pasan <b>3 equipos</b> de cada grupo a la siguiente fase (los 2 primeros más el mejor tercero). El Grupo J tiene <b>4 equipos</b>.',q:'¿Qué fracción de equipos del Grupo J NO clasifica?',answer:'1/4',opts:['1/4','1/3','1/2','2/4']},
+{info:'Si Argentina termina <b>1° del Grupo J</b>, juega los octavos de final el <b>3 de julio en Miami</b> contra el 2° del Grupo H. El Grupo H tiene a <b>España, Uruguay, Arabia Saudita y Cabo Verde</b>.',q:'¿Cuál es la probabilidad de que el rival de Argentina en octavos sea Uruguay?',answer:'1/4',opts:['1/4','1/2','1/3','2/4']},
+{info:'Para ser <b>campeón del mundo</b>, Argentina tiene que ganar: 3 partidos de grupos + octavos + cuartos + semis + final.',q:'¿Cuántos partidos en total tiene que ganar Argentina para ser campeón?',answer:'7',opts:['7','6','8','5']},
+{info:'El estadio Arrowhead Stadium de Kansas, donde Argentina juega su debut, tiene capacidad para <b>72.000 personas</b>. Se espera una ocupación del <b>100%</b>.',q:'Si el estadio tiene 72.000 butacas y está lleno, ¿cuántos hinchas ven el partido en vivo?',answer:'72.000',opts:['72.000','70.000','68.000','75.000']},
+{info:'En el Mundial 2026 hay <b>48 selecciones</b> y solo <b>1 puede ser campeón</b>. Si todos los equipos tuvieran las mismas posibilidades de ganar…',q:'¿Qué porcentaje de probabilidad tendría Argentina de ser campeón?',answer:'2%',opts:['2%','5%','10%','1%']},
+{info:'Argentina lleva <b>3 Mundiales seguidos</b> llegando al menos a cuartos de final (2014 subcampeón, 2018 octavos, 2022 campeón). En esos 3 torneos jugó un total de <b>21 partidos</b>.',q:'¿Cuál es el promedio de partidos por Mundial en esos 3 torneos?',answer:'7',opts:['7','6','8','5']},
+{info:'El último partido de grupos de Argentina es el <b>27 de junio contra Jordania</b> en Dallas. La final del Mundial es el <b>19 de julio</b> en Nueva Jersey.',q:'¿Cuántos días separan el último partido de grupos de Argentina (27/6) de la final (19/7)?',answer:'22',opts:['22','20','25','18']},
+];
+var mGs={score:0,lives:3,cur:0,answered:false,combo:1,correct:0,timerID:null,timeLeft:30,noTimer:false};var btn=document.getElementById('m-notimer-btn');if(btn){btn.textContent='⏱ Timer';btn.classList.remove('off');}
+var mOrder=[];
+function mShuffle(arr){var a=arr.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function mOpts(q){return mShuffle(q.opts).map(function(v){return{key:v,html:v};});}
+function toggleMundialTimer(){
+  var btn=document.getElementById('m-notimer-btn');
+  if(!btn)return;
+  mGs.noTimer=!mGs.noTimer;
+  if(mGs.noTimer){
+    clearInterval(mGs.timerID);mGs.timerID=null;
+    document.getElementById('m-timer').style.width='100%';
+    document.getElementById('m-timer').style.background='#666';
+    document.getElementById('m-timer').style.boxShadow='none';
+    btn.textContent='⏹ Sin timer';btn.classList.add('off');
+  }else{
+    btn.textContent='⏱ Timer';btn.classList.remove('off');
+    startMTimer();
+  }
+}
+function startMundialGame(){
+  if(mGs.timerID)clearInterval(mGs.timerID);
+  mGs={score:0,lives:3,cur:0,answered:false,combo:1,correct:0,timerID:null,timeLeft:30,noTimer:false};var btn=document.getElementById('m-notimer-btn');if(btn){btn.textContent='⏱ Timer';btn.classList.remove('off');}
+  mOrder=mShuffle(MQ.map(function(_,i){return i;})).slice(0,10);
+  renderMQ();sndClick();playMusic();
+}
+function renderMQ(){
+  var q=MQ[mOrder[mGs.cur]];
+  document.getElementById('m-hud-n').textContent='⚽ Pregunta '+(mGs.cur+1)+'/10';
+  document.getElementById('m-hud-score').textContent=mGs.score+' pts';
+  document.getElementById('m-hud-combo').textContent='⚽ ×'+mGs.combo;
+  document.getElementById('m-hud-combo').classList.toggle('hot',mGs.combo>1);
+  var lv=document.getElementById('m-hud-lives');lv.innerHTML='';
+  for(var i=0;i<3;i++)lv.innerHTML+='<span style="opacity:'+(i<mGs.lives?1:.2)+';transition:opacity .3s">❤️</span>';
+  document.getElementById('mq-info').innerHTML=q.info;
+  document.getElementById('mq-text').textContent=q.q;
+  var og=document.getElementById('m-opts');og.innerHTML='';
+  document.getElementById('m-fb').textContent='';
+  mGs.answered=false;
+  mOpts(q).forEach(function(opt){
+    var b=document.createElement('button');b.className='opt';
+    b.innerHTML=opt.html;
+    b.onclick=function(){checkMQ(opt.key,b,q);};
+    og.appendChild(b);
+  });
+  startMTimer();
+}
+function startMTimer(){
+  if(mGs.timerID)clearInterval(mGs.timerID);
+  mGs.timeLeft=30;updMTimer();
+  mGs.timerID=setInterval(function(){mGs.timeLeft--;updMTimer();if(mGs.timeLeft<=0){clearInterval(mGs.timerID);if(!mGs.answered)mTimeout();}},1000);
+}
+function updMTimer(){var pct=mGs.timeLeft/30*100;var fill=document.getElementById('m-timer');if(!fill)return;fill.style.width=pct+'%';fill.style.background=pct>50?'#ffd700':pct>25?'#ff9500':'#ff4444';fill.style.boxShadow='0 0 6px '+(pct>50?'#ffd700':pct>25?'#ff9500':'#ff4444');}
+function mTimeout(){
+  mGs.answered=true;mGs.combo=1;mGs.lives--;
+  document.getElementById('m-fb').textContent='⏰ ¡Tiempo! Era: '+MQ[mOrder[mGs.cur]].answer;
+  document.getElementById('m-fb').className='fb no';
+  document.querySelectorAll('#m-opts .opt').forEach(function(b){if(b.innerHTML===MQ[mOrder[mGs.cur]].answer)b.classList.add('show');});
+  updMLives();sndTimeout();
+  setTimeout(function(){mGs.cur++;if(mGs.lives<=0||mGs.cur>=10)showMResult();else renderMQ();},1400);
+}
+function checkMQ(key,btn,q){
+  if(mGs.answered)return;
+  mGs.answered=true;clearInterval(mGs.timerID);
+  var ok=key===q.answer;
+  var fb=document.getElementById('m-fb');
+  if(ok){
+    btn.classList.add('hit');mGs.correct++;mGs.combo=Math.min(mGs.combo+1,8);
+    var pts=10*mGs.combo;mGs.score+=pts;totalXP+=pts;
+    fb.textContent='⚽ ¡Correcto! +'+pts+' pts';fb.className='fb ok';
+    var el=document.createElement('div');el.style.cssText='position:fixed;top:40%;left:50%;transform:translate(-50%,-50%);font-size:50px;z-index:300;animation:ptsUp 1s ease forwards;pointer-events:none;';el.textContent='⚽';document.body.appendChild(el);setTimeout(function(){el.remove();},1000);
+    if(mGs.combo>=3)sndCombo(mGs.combo);else sndCorrect();
+    checkXPBadges();
+  }else{
+    btn.classList.add('miss');mGs.lives--;mGs.combo=1;updMLives();
+    document.querySelectorAll('#m-opts .opt').forEach(function(b){if(b.innerHTML===q.answer)b.classList.add('show');});
+    fb.textContent='❌ La respuesta es: '+q.answer;fb.className='fb no';sndWrong();
+  }
+  document.getElementById('m-hud-combo').textContent='⚽ ×'+mGs.combo;
+  document.getElementById('m-hud-combo').classList.toggle('hot',mGs.combo>1);
+  setTimeout(function(){mGs.cur++;if(mGs.lives<=0||mGs.cur>=10)showMResult();else renderMQ();},1400);
+}
+function updMLives(){document.getElementById('m-hud-lives').querySelectorAll('span').forEach(function(s,i){s.style.opacity=i<mGs.lives?1:.2;});}
+function showMResult(){
+  if(mGs.timerID)clearInterval(mGs.timerID);stopMusic();
+  var pct=Math.round(mGs.correct/10*100);
+  document.getElementById('mr-emoji').textContent=pct>=90?'🏆':pct>=70?'⭐':pct>=50?'👍':'💪';
+  document.getElementById('mr-title').textContent=pct>=90?'¡Campeón del Mundo!':pct>=70?'¡Gran partido!':pct>=50?'¡Buen intento!':'¡A entrenar más!';
+  document.getElementById('mr-score').textContent=mGs.correct+'/10';
+  document.getElementById('mr-sub').textContent=mGs.score+' puntos · '+pct+'% correcto';
+  updateXPBar();if(pct>=70)confetti();
+  go('s-mundial-result');
+}
+function abortMundial(){if(mGs.timerID)clearInterval(mGs.timerID);stopMusic();go('s-home');}
 </script>
+
+  <!-- MUNDIAL JUEGO -->
+  <div class="scr" id="s-mundial-game">
+    <button class="back-btn" onclick="abortMundial()">← Salir</button>
+    <div class="mundial-hud">
+      <div class="hud-row">
+        <div>
+          <div class="hud-lv" id="m-hud-n" style="color:#ffd700;">⚽ Pregunta 1/10</div>
+          <div class="hud-score" id="m-hud-score">0 pts</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+          <div class="hud-lives" id="m-hud-lives"></div>
+          <div class="hud-combo" id="m-hud-combo" style="border-color:rgba(255,215,0,.3);color:#ffd700;">⚽ ×1</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div class="timer-bar" style="flex:1;"><div class="timer-fill" id="m-timer" style="width:100%;background:#ffd700;box-shadow:0 0 6px #ffd700;"></div></div>
+        <button class="m-notimer-btn" id="m-notimer-btn" onclick="toggleMundialTimer()">⏱ Timer</button>
+      </div>
+    </div>
+    <div style="padding:0 0 1.5rem;">
+      <div class="mq-wrap">
+        <div class="mq-info">
+          <div class="mq-info-tag">📋 Dato del Mundial</div>
+          <div class="mq-info-text" id="mq-info"></div>
+        </div>
+        <div class="mq-pregunta">
+          <div class="mq-pregunta-tag">❓ Pregunta</div>
+          <div class="mq-text" id="mq-text"></div>
+          <div class="opts" id="m-opts"></div>
+          <div class="fb" id="m-fb"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- MUNDIAL RESULTADO -->
+  <div class="scr" id="s-mundial-result">
+    <div style="padding:.5rem 1rem 2rem;">
+      <div class="mr-panel">
+        <div class="mr-emoji" id="mr-emoji">🏆</div>
+        <div class="mr-title" id="mr-title">¡Campeón!</div>
+        <div class="mr-score" id="mr-score">0/10</div>
+        <div class="mr-sub" id="mr-sub"></div>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:1.2rem;">
+          <button class="btn-gg" onclick="startMundialGame()">🔄 Jugar de nuevo</button>
+          <button class="btn-sec" onclick="go('s-home')">🏠 Volver al inicio</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
