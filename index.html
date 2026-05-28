@@ -1908,7 +1908,7 @@ function startMundialGame(){
   if(mGs.timerID)clearInterval(mGs.timerID);
   mGs={score:0,lives:3,cur:0,answered:false,combo:1,correct:0,timerID:null,timeLeft:30,noTimer:false};var btn=document.getElementById('m-notimer-btn');if(btn){btn.textContent='⏱ Timer';btn.classList.remove('off');}
   mOrder=mShuffle(MQ.map(function(_,i){return i;})).slice(0,10);
-  renderMQ();sndClick();playMusic();
+  go('s-mundial-game');renderMQ();sndClick();playMusic();
 }
 function renderMQ(){
   var q=MQ[mOrder[mGs.cur]];
