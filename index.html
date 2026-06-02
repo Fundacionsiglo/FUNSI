@@ -309,17 +309,17 @@ button{-webkit-appearance:none;appearance:none;}
 .mundial-btn-sub{font-size:11px;color:rgba(255,215,0,.65);font-weight:700;margin-top:2px;}
 .mundial-btn-arr{font-size:22px;color:#ffd700;font-weight:900;}
 .mundial-header{background:linear-gradient(135deg,#005c38,#003d27);padding:1.2rem 1rem 1rem;border-bottom:2px solid #ffd700;text-align:center;}
-.mundial-title{font-size:22px;font-weight:900;color:#ffd700;text-shadow:0 0 10px rgba(255,215,0,.3);}
+.mundial-title{font-size:22px;font-weight:900;color:#ffd700;}
 .mundial-sub{font-size:11px;color:rgba(255,215,0,.6);margin-top:3px;font-weight:700;}
+.mundial-hud{background:linear-gradient(135deg,#003d27,#005c38);border-bottom:2px solid #ffd700;padding:.8rem 1rem;}
 .mq-wrap{background:var(--card);border-radius:var(--r);padding:0;margin:1rem;border:2px solid rgba(255,215,0,.2);overflow:hidden;}
 .mq-info{background:rgba(255,215,0,.07);border-bottom:1px solid rgba(255,215,0,.15);padding:1rem 1.1rem;}
-.mq-info-tag{font-size:10px;font-weight:800;color:#ffd700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:5px;}
+.mq-info-tag{font-size:10px;font-weight:800;color:#ffd700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;}
 .mq-info-text{font-size:14px;color:var(--text);font-weight:700;line-height:1.7;}
 .mq-info-text b{color:#ffd700;}
 .mq-pregunta{padding:1rem 1.1rem 1.2rem;}
-.mq-pregunta-tag{font-size:10px;font-weight:800;color:var(--pp);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:5px;}
+.mq-pregunta-tag{font-size:10px;font-weight:800;color:var(--pp);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;}
 .mq-text{font-size:20px;font-weight:900;color:var(--text);margin-bottom:1rem;line-height:1.4;}
-.mundial-hud{background:linear-gradient(135deg,#003d27,#005c38);border-bottom:2px solid #ffd700;padding:.8rem 1rem;}
 .mr-panel{background:linear-gradient(180deg,#003d27,#001a10);border:2px solid #ffd700;border-radius:var(--r);padding:1.6rem 1.4rem;text-align:center;margin:1rem;}
 .mr-emoji{font-size:58px;margin-bottom:.3rem;}
 .mr-title{font-size:21px;font-weight:900;color:#ffd700;margin-bottom:.3rem;}
@@ -642,7 +642,7 @@ const DIFF_LABELS=["","🌱 Inicio","⚡ Básico","🔥 Medio","💫 Avanzado","
 const DIFF_COLORS=["","#54d18c","#7c83fd","#f7b731","#c77dff","#ff6b6b"];
 const DIFF_BG=["","#1a3a2a","#1a1d3a","#3a2e0f","#2d1a3a","#3a1a1a"];
 
-const ML=5, QPL=6, TIMER=20;
+const ML=6, QPL=6, TIMER=20;
 const CC=["#7c83fd","#54d18c","#f7b731","#c77dff","#ff6b6b","#ff9f43","#ff6b6b"];
 
 let prog={}, totalXP=0, globalStreak=0;
@@ -717,124 +717,183 @@ function pick(arr){return arr[rnd(0,arr.length-1)];}
    diff: 1..5
 ═══════════════════════════ */
 function makeQ(g, topic, lv, idx, easy, diff){
-  diff = Math.min(5, Math.max(1, diff||1));
+  diff = Math.min(6, Math.max(1, diff||1));
   let ediff = easy ? Math.max(1, diff-1) : diff;
   let q, answer, opts, isFrac=false;
 
   if(topic==='suma'){
-    let max=easy?Math.max(5,5+ediff*8):10+ediff*20;
-    let a=rnd(1,max),b=rnd(1,max);
-    answer=String(a+b); q=a+' + '+b+' = ?';
+    if(diff===6){
+      let a=rnd(200,799),b=rnd(100,499),c=rnd(100,299);
+      answer=String(a+b+c); q=a+' + '+b+' + '+c+' = ?';
+    } else {
+      let max=easy?Math.max(5,5+ediff*8):10+ediff*20;
+      let a=rnd(1,max),b=rnd(1,max);
+      answer=String(a+b); q=a+' + '+b+' = ?';
+    }
   } else if(topic==='resta'){
-    let max=easy?Math.max(5,5+ediff*8):10+ediff*20;
-    let b=rnd(1,max),a=rnd(b,max+b);
-    answer=String(a-b); q=a+' − '+b+' = ?';
+    if(diff===6){
+      let b2=rnd(200,799),a2=rnd(b2+100,b2+800);
+      answer=String(a2-b2); q=a2+' − '+b2+' = ?';
+    } else {
+      let max=easy?Math.max(5,5+ediff*8):10+ediff*20;
+      let b=rnd(1,max),a=rnd(b,max+b);
+      answer=String(a-b); q=a+' − '+b+' = ?';
+    }
   } else if(topic==='multiplicacion'){
-    let mA=easy?Math.min(2+ediff,6):2+ediff+1, mB=easy?Math.min(2+ediff,7):2+ediff+Math.floor(ediff/2);
-    let a=rnd(2,mA),b=rnd(2,mB);
-    answer=String(a*b); q=a+' × '+b+' = ?';
+    if(diff===6){
+      let a2=rnd(13,49),b2=rnd(13,49);
+      answer=String(a2*b2); q=a2+' × '+b2+' = ?';
+    } else {
+      let mA=easy?Math.min(2+ediff,6):2+ediff+1, mB=easy?Math.min(2+ediff,7):2+ediff+Math.floor(ediff/2);
+      let a=rnd(2,mA),b=rnd(2,mB);
+      answer=String(a*b); q=a+' × '+b+' = ?';
+    }
   } else if(topic==='division'){
-    let dv=easy?rnd(2,3+ediff):rnd(2,3+ediff*2);
-    let res=easy?rnd(2,5+ediff):rnd(2,8+ediff*3);
-    answer=String(res); q=(dv*res)+' ÷ '+dv+' = ?';
+    if(diff===6){
+      let dv2=rnd(11,24),res2=rnd(12,40);
+      answer=String(res2); q=(dv2*res2)+' ÷ '+dv2+' = ?';
+    } else {
+      let dv=easy?rnd(2,3+ediff):rnd(2,3+ediff*2);
+      let res=easy?rnd(2,5+ediff):rnd(2,8+ediff*3);
+      answer=String(res); q=(dv*res)+' ÷ '+dv+' = ?';
+    }
   } else if(topic==='numeros'){
-    let max=easy?10*ediff:10*(g||1)*ediff, a=rnd(1,Math.max(5,max));
-    let b=rnd(1,easy?5:10);
-    let ops=[{q:'¿Cuánto es '+a+' más '+b+'?',a:a+b},{q:'Número anterior a '+(a+1),a:a},{q:'El doble de '+a+' es...',a:a*2}];
-    let o=ops[idx%ops.length]; answer=String(o.a); q=o.q;
+    if(diff===6){
+      let nr=rnd(20,80);
+      let ops6=[
+        {q:'El triple de '+nr+' más 15 =', a:nr*3+15},
+        {q:'¿Cuánto falta para llegar a 200 desde '+nr+'?', a:200-nr},
+        {q:'La mitad de '+nr+' multiplicada por 3 =', a:(nr/2)*3}
+      ];
+      let o6=ops6[idx%ops6.length]; answer=String(o6.a); q=o6.q;
+    } else {
+      let max=easy?10*ediff:10*(g||1)*ediff, a=rnd(1,Math.max(5,max));
+      let b=rnd(1,easy?5:10);
+      let ops=[{q:'¿Cuánto es '+a+' más '+b+'?',a:a+b},{q:'Número anterior a '+(a+1),a:a},{q:'El doble de '+a+' es...',a:a*2}];
+      let o=ops[idx%ops.length]; answer=String(o.a); q=o.q;
+    }
   } else if(topic==='fracciones'){
     isFrac=true;
-    let den=easy?rnd(2,2+ediff):rnd(2,3+ediff*2), rn, rd;
-    if(idx%3===0){
-      let n1=rnd(1,Math.max(1,den-2)),n2=rnd(1,Math.max(1,den-1-n1));
-      let s=n1+n2,g2=gcd(s,den);rn=s/g2;rd=den/g2;
-      q=frac(n1,den)+' + '+frac(n2,den)+' = ?';
-    } else if(idx%3===1){
-      let n1=rnd(2,den-1),n2=rnd(1,Math.max(1,n1-1));
-      let d2=n1-n2,g2=gcd(d2,den);rn=d2/g2;rd=den/g2;
-      q=frac(n1,den)+' − '+frac(n2,den)+' = ?';
+    if(diff===6){
+      let d1=rnd(2,6),n1=rnd(1,d1-1),d2=rnd(2,6),n2=rnd(1,d2-1);
+      let rn=n1*n2,rd=d1*d2,gx=gcd(rn,rd); rn=rn/gx; rd=rd/gx;
+      answer=rn+'/'+rd;
+      q=frac(n1,d1)+' × '+frac(n2,d2)+' = ?';
+      let ws6=new Set([answer]); let tr6=0;
+      while(ws6.size<4&&tr6++<80){let wn=rnd(1,rd*2+1),wd=rnd(2,rd+3);let wg=gcd(wn,wd);ws6.add((wn/wg)+'/'+(wd/wg));}
+      opts=Array.from(ws6).map(s=>{let[n,d]=s.split('/').map(Number);return{key:s,html:frac(n,d)};}).sort(()=>Math.random()-.5);
     } else {
-      let n=rnd(1,den-1);rn=n;rd=den;
-      q='¿Fracción equivalente a '+frac(n*2,den*2)+'?';
-    }
-    answer=rn+'/'+rd;
-    let ws=new Set([answer]);let tr=0;
-    while(ws.size<4&&tr<80){tr++;let wn=rnd(1,den*2),wd=rnd(2,den+2);let wg2=gcd(wn,wd);ws.add((wn/wg2)+'/'+(wd/wg2));}
-    opts=Array.from(ws).map(s=>{let[n,d]=s.split('/').map(Number);return{key:s,html:frac(n,d)};}).sort(()=>Math.random()-.5);
-  } else if(topic==='decimales'){
-    let a=rnd(1,9)+rnd(1,9)/10, b=rnd(1,9)+rnd(1,9)/10;
-    answer=String(Math.round((a+b)*10)/10); q=a.toFixed(1)+' + '+b.toFixed(1)+' = ?';
-  } else if(topic==='porcentajes'){
-    let base=easy?rnd(1,4)*10:rnd(2,10)*10, pct=easy?rnd(1,3)*10:rnd(1,5)*10;
-    answer=String(base*pct/100); q='¿El '+pct+'% de '+base+'?';
-  } else if(topic==='expresiones'){
-    let maxN=easy?5:8+ediff;
-    if(ediff<=1){
-      let a=rnd(1,maxN),b=rnd(1,maxN),c=rnd(1,maxN);
-      answer=String(a+b+c); q=a+' + '+b+' + '+c+' = ?';
-    } else if(ediff===2){
-      let a=rnd(2,maxN),b=rnd(2,maxN),c=rnd(1,maxN);
-      answer=String(a*b+c); q=a+' × '+b+' + '+c+' = ?';
-    } else if(ediff===3){
-      let a=rnd(1,maxN),b=rnd(1,maxN),c=rnd(2,maxN);
-      answer=String((a+b)*c); q='('+a+' + '+b+') × '+c+' = ?';
-    } else if(ediff===4){
-      let b=rnd(2,easy?3:5),res=rnd(2,easy?4:8),a=b*res,c=rnd(1,maxN);
-      let opF=rnd(0,1)===0?'+':'−';
-      answer=opF==='+'?String(res+c):String(Math.max(1,res-c));
-      q=a+' ÷ '+b+' '+opF+' '+c+' = ?';
-    } else {
-      let variant=rnd(0,1);
-      if(variant===0){
-        let a=rnd(2,easy?4:8),b=rnd(2,easy?4:8),c=rnd(2,easy?4:8),d=rnd(2,easy?4:8);
-        answer=String(a*b+c*d); q=a+' × '+b+' + '+c+' × '+d+' = ?';
+      let den=easy?rnd(2,2+ediff):rnd(2,3+ediff*2), rn, rd;
+      if(idx%3===0){
+        let n1=rnd(1,Math.max(1,den-2)),n2=rnd(1,Math.max(1,den-1-n1));
+        let s=n1+n2,g2=gcd(s,den);rn=s/g2;rd=den/g2;
+        q=frac(n1,den)+' + '+frac(n2,den)+' = ?';
+      } else if(idx%3===1){
+        let n1=rnd(2,den-1),n2=rnd(1,Math.max(1,n1-1));
+        let d2=n1-n2,g2=gcd(d2,den);rn=d2/g2;rd=den/g2;
+        q=frac(n1,den)+' − '+frac(n2,den)+' = ?';
       } else {
-        let a=rnd(2,easy?4:7),b=rnd(1,easy?4:6),c=rnd(1,easy?4:6),d=rnd(1,easy?3:8);
-        let res=a*(b+c)-d; if(res<1){d=1;res=a*(b+c)-d;}
-        answer=String(res); q=a+' × ('+b+' + '+c+') − '+d+' = ?';
+        let n=rnd(1,den-1);rn=n;rd=den;
+        q='¿Fracción equivalente a '+frac(n*2,den*2)+'?';
+      }
+      answer=rn+'/'+rd;
+      let ws=new Set([answer]);let tr=0;
+      while(ws.size<4&&tr<80){tr++;let wn=rnd(1,den*2),wd=rnd(2,den+2);let wg2=gcd(wn,wd);ws.add((wn/wg2)+'/'+(wd/wg2));}
+      opts=Array.from(ws).map(s=>{let[n,d]=s.split('/').map(Number);return{key:s,html:frac(n,d)};}).sort(()=>Math.random()-.5);
+    }
+  } else if(topic==='decimales'){
+    if(diff===6){
+      let a2=(rnd(1,9)+rnd(1,9)/10).toFixed(1), b2=(rnd(1,9)+rnd(1,9)/10).toFixed(1);
+      let res6=Math.round(parseFloat(a2)*parseFloat(b2)*100)/100;
+      answer=String(res6); q=a2+' × '+b2+' = ?';
+    } else {
+      let a=rnd(1,9)+rnd(1,9)/10, b=rnd(1,9)+rnd(1,9)/10;
+      answer=String(Math.round((a+b)*10)/10); q=a.toFixed(1)+' + '+b.toFixed(1)+' = ?';
+    }
+  } else if(topic==='porcentajes'){
+    if(diff===6){
+      let base6=rnd(2,10)*50, p1=rnd(1,4)*10, p2=rnd(1,3)*10;
+      let after1=base6*(1+p1/100), fin=Math.round(after1*(1-p2/100));
+      answer=String(fin);
+      q='Precio: $'+base6+'. Sube '+p1+'% y luego baja '+p2+'%. ¿Precio final?';
+    } else {
+      let base=easy?rnd(1,4)*10:rnd(2,10)*10, pct=easy?rnd(1,3)*10:rnd(1,5)*10;
+      answer=String(base*pct/100); q='¿El '+pct+'% de '+base+'?';
+    }
+  } else if(topic==='expresiones'){
+    if(diff===6){
+      let a6=rnd(2,4),b6=rnd(2,5),c6=rnd(2,6),d6=rnd(1,5);
+      let res6=Math.pow(a6,2)*(b6+c6)-d6;
+      answer=String(res6); q=a6+sup(2)+' × ('+b6+' + '+c6+') − '+d6+' = ?';
+    } else {
+      let maxN=easy?5:8+ediff;
+      if(ediff<=1){
+        let a=rnd(1,maxN),b=rnd(1,maxN),c=rnd(1,maxN);
+        answer=String(a+b+c); q=a+' + '+b+' + '+c+' = ?';
+      } else if(ediff===2){
+        let a=rnd(2,maxN),b=rnd(2,maxN),c=rnd(1,maxN);
+        answer=String(a*b+c); q=a+' × '+b+' + '+c+' = ?';
+      } else if(ediff===3){
+        let a=rnd(1,maxN),b=rnd(1,maxN),c=rnd(2,maxN);
+        answer=String((a+b)*c); q='('+a+' + '+b+') × '+c+' = ?';
+      } else if(ediff===4){
+        let b=rnd(2,easy?3:5),res=rnd(2,easy?4:8),a=b*res,c=rnd(1,maxN);
+        let opF=rnd(0,1)===0?'+':'−';
+        answer=opF==='+'?String(res+c):String(Math.max(1,res-c));
+        q=a+' ÷ '+b+' '+opF+' '+c+' = ?';
+      } else {
+        let variant=rnd(0,1);
+        if(variant===0){
+          let a=rnd(2,easy?4:8),b=rnd(2,easy?4:8),c=rnd(2,easy?4:8),d=rnd(2,easy?4:8);
+          answer=String(a*b+c*d); q=a+' × '+b+' + '+c+' × '+d+' = ?';
+        } else {
+          let a=rnd(2,easy?4:7),b=rnd(1,easy?4:6),c=rnd(1,easy?4:6),d=rnd(1,easy?3:8);
+          let res=a*(b+c)-d; if(res<1){d=1;res=a*(b+c)-d;}
+          answer=String(res); q=a+' × ('+b+' + '+c+') − '+d+' = ?';
+        }
       }
     }
   } else if(topic==='potencias'){
-    if(ediff<=1){
-      let base=rnd(2,4),exp=rnd(2,2),correct=Math.pow(base,exp);
-      answer=String(correct); q=base+sup(exp)+' = ?';
-      let hint=Array(exp).fill(base).join(' × ');
-      // store hint for use in reinforce
-      makeQ._lastHint=hint;
-    } else if(ediff===2){
-      let base=rnd(2,7),exp=rnd(2,3),correct=Math.pow(base,exp);
-      answer=String(correct); q=base+sup(exp)+' = ?';
-    } else if(ediff===3){
-      if(rnd(0,1)===0){
-        let base=rnd(2,9),exp=rnd(2,4),correct=Math.pow(base,exp);
-        answer=String(correct); q=base+sup(exp)+' = ?';
-      } else {
-        let base=rnd(2,7),exp=rnd(2,3),val=Math.pow(base,exp);
-        answer=String(base); q='__'+sup(exp)+' = '+val+' → ¿base?';
-      }
-    } else if(ediff===4){
-      if(rnd(0,1)===0){
-        let exp=rnd(1,6),correct=Math.pow(10,exp);
-        answer=String(correct); q='10'+sup(exp)+' = ?';
-      } else {
-        let base=rnd(2,6),e1=rnd(1,4),e2=rnd(1,4);
-        answer=String(e1+e2); q=base+sup(e1)+' × '+base+sup(e2)+' = '+base+sup('?');
-      }
+    if(diff===6){
+      let b6=rnd(2,5),e1=rnd(2,3),e2=rnd(1,2);
+      let res6=Math.pow(b6,e1)*Math.pow(b6,e2);
+      answer=String(res6); q=b6+sup(e1)+' × '+b6+sup(e2)+' = ?';
     } else {
-      if(rnd(0,1)===0){
-        let base=rnd(2,5),exp=rnd(1,3);
-        answer='1/'+Math.pow(base,exp); isFrac=true;
-        q=base+sup('-'+exp)+' = ?';
-        let val=Math.pow(base,exp);
-        let ws2=new Set([answer]);let tr2=0;
-        while(ws2.size<4&&tr2<80){tr2++;let b2=rnd(2,5),e2=rnd(1,3);ws2.add('1/'+Math.pow(b2,e2));}
-        opts=Array.from(ws2).map(s=>{
-          let parts=s.split('/');
-          return{key:s,html:parts.length>1?frac(parts[0],parts[1]):s};
-        }).sort(()=>Math.random()-.5);
+      if(ediff<=1){
+        let base=rnd(2,4),exp=rnd(2,2),correct=Math.pow(base,exp);
+        answer=String(correct); q=base+sup(exp)+' = ?';
+        makeQ._lastHint=Array(exp).fill(base).join(' × ');
+      } else if(ediff===2){
+        let base=rnd(2,7),exp=rnd(2,3),correct=Math.pow(base,exp);
+        answer=String(correct); q=base+sup(exp)+' = ?';
+      } else if(ediff===3){
+        if(rnd(0,1)===0){
+          let base=rnd(2,9),exp=rnd(2,4),correct=Math.pow(base,exp);
+          answer=String(correct); q=base+sup(exp)+' = ?';
+        } else {
+          let base=rnd(2,7),exp=rnd(2,3),val=Math.pow(base,exp);
+          answer=String(base); q='__'+sup(exp)+' = '+val+' → ¿base?';
+        }
+      } else if(ediff===4){
+        if(rnd(0,1)===0){
+          let exp=rnd(1,6),correct=Math.pow(10,exp);
+          answer=String(correct); q='10'+sup(exp)+' = ?';
+        } else {
+          let base=rnd(2,6),e1=rnd(1,4),e2=rnd(1,4);
+          answer=String(e1+e2); q=base+sup(e1)+' × '+base+sup(e2)+' = '+base+sup('?');
+        }
       } else {
-        let n=rnd(2,15),correct=n*n;
-        answer=String(n); q='√'+correct+' = ?';
+        if(rnd(0,1)===0){
+          let base=rnd(2,5),exp=rnd(1,3);
+          answer='1/'+Math.pow(base,exp); isFrac=true;
+          q=base+sup('-'+exp)+' = ?';
+          let ws2=new Set([answer]);let tr2=0;
+          while(ws2.size<4&&tr2<80){tr2++;let b2=rnd(2,5),e2=rnd(1,3);ws2.add('1/'+Math.pow(b2,e2));}
+          opts=Array.from(ws2).map(s=>{let parts=s.split('/');return{key:s,html:parts.length>1?frac(parts[0],parts[1]):s};}).sort(()=>Math.random()-.5);
+        } else {
+          let n=rnd(2,15),correct=n*n;
+          answer=String(n); q='√'+correct+' = ?';
+        }
       }
     }
   } else {
@@ -845,7 +904,7 @@ function makeQ(g, topic, lv, idx, easy, diff){
     let av=parseFloat(answer);
     let ws=new Set([answer]);let tr=0;
     let spread=easy?3:Math.max(4,Math.floor(Math.abs(av)*.35)+ediff*2);
-    while(ws.size<4&&tr<80){tr++;let d=rnd(-spread,spread);if(d!==0&&av+d>0)ws.add(String(av+d));}
+    while(ws.size<4&&tr<80){tr++;let d=rnd(-spread,spread);if(d!==0&&av+d>0)ws.add(String(Math.round((av+d)*100)/100));}
     opts=Array.from(ws).map(v=>({key:v,html:v})).sort(()=>Math.random()-.5);
   }
   return{q,answer,opts};
@@ -911,6 +970,7 @@ function adaptDifficulty(wasCorrect){
       updateDiffPill();
       showDiffToast(true);
       if(gs.diff>=5) unlockBadge('diff5');
+    if(gs.lv>=6&&stars>=2) unlockBadge('extreme');
     }
   } else {
     gs.consecutiveWrong++;
@@ -984,7 +1044,7 @@ function renderQ(){
 function startTimer(){
   if(noTimerMode) return;
   if(gs.timerID) clearInterval(gs.timerID);
-  gs.timeLeft=TIMER; updateTimerBar();
+  gs.timeLeft=(gs.diff>=6)?15:TIMER; updateTimerBar();
   gs.timerID=setInterval(()=>{
     gs.timeLeft--;updateTimerBar();
     if(gs.timeLeft<=0){clearInterval(gs.timerID);if(!gs.answered)timeOut();}
@@ -1341,7 +1401,8 @@ function renderLevels(){
       b.onclick=()=>{sndClick();startGame(i,false);};
     } else {
       b.classList.add('lv-go');
-      b.innerHTML='<div class="lv-num">'+i+'</div><div class="lv-stars">▶</div><div class="lv-tag">¡Jugá!</div>';
+      if(i===ML){b.style.cssText+='border-color:#c77dff;background:linear-gradient(135deg,rgba(199,125,255,.08),rgba(100,50,200,.05))';}
+      b.innerHTML='<div class="lv-num" style="'+(i===ML?'color:#c77dff;text-shadow:0 0 8px #c77dff':'')+'">'+( i===ML?'💎':i)+'</div><div class="lv-stars">'+( i===ML?'💎':'▶')+'</div><div class="lv-tag" style="'+(i===ML?'background:linear-gradient(135deg,#7c3aed,#a855f7)':'')+'">'+( i===ML?'EXTREMO':'¡Jugá!')+'</div>';
       b.onclick=()=>{sndClick();startGame(i,false);};
     }
     lg.appendChild(b);
@@ -1862,125 +1923,47 @@ function showApaFromResult(topic,strategy){
 function closeApa(){document.getElementById('apa-overlay').style.display='none';}
 
 
-/* ═══ MODO MUNDIAL 2026 ═══ */
+/* === MODO MUNDIAL 2026 === */
 var MQ=[
-{info:'El Mundial 2026 tiene <b>12 grupos</b> con <b>4 equipos cada uno</b>. Argentina quedó en el <b>Grupo J</b> junto a Argelia, Austria y Jordania. Los grupos van de la A a la L.',q:'Si hay 12 grupos con 4 equipos cada uno, ¿cuántos equipos participan en total?',answer:'48',opts:['48','32','40','44']},
-{info:'En el Grupo J, <b>Argentina, Argelia, Austria y Jordania</b> se enfrentan entre sí. Cada equipo juega <b>una vez contra cada rival</b> del grupo. Son 4 equipos.',q:'Si cada equipo juega una vez contra los otros 3, ¿cuántos partidos en total se juegan en el Grupo J?',answer:'6',opts:['6','4','8','12']},
+{info:'El Mundial 2026 tiene <b>12 grupos</b> con <b>4 equipos cada uno</b>. <b>Argentina</b> quedó en el <b>Grupo J</b> junto a Argelia, Austria y Jordania. Los grupos van de la A a la L.',q:'Si hay 12 grupos con 4 equipos cada uno, ¿cuántos equipos participan en total?',answer:'48',opts:['48','32','40','44']},
+{info:'Argentina debuta el <b>16 de junio contra Argelia</b> en Kansas. Su segundo partido es el <b>22 de junio contra Austria</b> en Dallas. El tercero es el <b>27 de junio contra Jordania</b> en Dallas.',q:'¿Cuántos días pasan entre el debut (16/6) y el último partido de grupos (27/6)?',answer:'11',opts:['11','10','12','9']},
+{info:'En el Mundial 2026, por cada partido ganado se obtienen <b>3 puntos</b>. Por empate <b>1 punto</b>. Por derrota <b>0 puntos</b>. Argentina juega <b>3 partidos</b> en la fase de grupos.',q:'Si Argentina gana 2 partidos y empata 1, ¿cuántos puntos acumula?',answer:'7',opts:['7','6','8','5']},
+{info:'En el Grupo J, <b>Argentina, Argelia, Austria y Jordania</b> se enfrentan entre sí. Cada equipo juega <b>una vez contra cada rival</b>. Son 4 equipos en total.',q:'Si cada equipo juega una vez contra los otros 3, ¿cuántos partidos en total se juegan en el Grupo J?',answer:'6',opts:['6','4','8','12']},
+{info:'En este Mundial pasan <b>3 equipos de cada grupo</b> a la siguiente fase: los 2 primeros clasifican directo más el mejor tercero. El Grupo J tiene <b>4 equipos</b>.',q:'¿Qué fracción de equipos del Grupo J NO clasifica?',answer:'1/4',opts:['1/4','1/3','1/2','2/4']},
+{info:'Si Argentina termina <b>1° del Grupo J</b>, juega octavos el <b>3 de julio en Miami</b> contra el 2° del Grupo H. El Grupo H tiene a <b>España, Uruguay, Arabia Saudita y Cabo Verde</b>.',q:'¿Cuál es la probabilidad de que el rival de Argentina en octavos sea Uruguay?',answer:'1/4',opts:['1/4','1/2','1/3','2/4']},
+{info:'Para ser <b>campeón del mundo</b>, Argentina tiene que superar: <b>3 partidos de grupos</b>, luego octavos, cuartos de final, semifinal y la gran final.',q:'¿Cuántos partidos en total tiene que ganar Argentina para ser campeón?',answer:'7',opts:['7','6','8','5']},
+{info:'El Arrowhead Stadium de Kansas, donde Argentina juega su <b>debut el 16 de junio</b>, tiene capacidad para <b>72.000 personas</b>. Se espera una ocupación del <b>75%</b>.',q:'¿Cuántos hinchas habrá en el estadio si la ocupación es del 75%?',answer:'54.000',opts:['54.000','62.000','48.000','58.000']},
+{info:'En el Mundial 2026 participan <b>48 selecciones</b> y solo <b>1 puede ser campeón</b>. Argentina llega como el actual campeón del mundo (Qatar 2022).',q:'Si todos los equipos tuvieran las mismas posibilidades, ¿qué porcentaje de probabilidad tendría Argentina de ser campeón?',answer:'2%',opts:['2%','5%','10%','1%']},
+{info:'Argentina jugó los últimos <b>3 Mundiales</b> llegando lejos: 2014 (7 partidos), 2018 (4 partidos), 2022 (7 partidos). Total: <b>18 partidos</b>.',q:'¿Cuál es el promedio de partidos jugados por Mundial en esos 3 torneos?',answer:'6',opts:['6','5','7','8']},
+{info:'El AT&T Stadium de Dallas, donde Argentina juega contra <b>Austria y Jordania</b>, tiene capacidad para <b>80.000 personas</b>. Para el partido contra Austria se espera un <b>90% de ocupación</b>.',q:'¿Cuántas personas habrá en el partido Argentina-Austria?',answer:'72.000',opts:['72.000','75.000','68.000','80.000']},
+{info:'En Qatar 2022, Argentina hizo <b>15 goles a favor</b> y recibió <b>8 en contra</b> en los 7 partidos que jugó. La diferencia de goles es goles a favor menos goles en contra.',q:'¿Cuál fue la diferencia de goles de Argentina en Qatar 2022?',answer:'+7',opts:['+7','+6','+8','+5']},
 {info:'El Mundial 2026 tiene <b>12 grupos</b>. En cada grupo hay <b>4 equipos</b> y se juegan <b>6 partidos</b> (cada equipo juega contra los otros 3 una vez).',q:'¿Cuántos partidos en total se juegan en la fase de grupos del Mundial?',answer:'72',opts:['72','48','60','84']},
 {info:'En los octavos de final quedan <b>32 equipos</b>. En cada partido hay <b>1 equipo eliminado</b>. Así se sigue hasta quedar 1 solo campeón.',q:'Si hay 32 equipos en octavos y cada partido elimina a 1, ¿cuántos partidos se necesitan para tener 1 campeón?',answer:'31',opts:['31','32','16','30']},
-{info:'En el Mundial 2026, por cada partido ganado se obtienen <b>3 puntos</b>, por empate <b>1 punto</b> y por derrota <b>0 puntos</b>. Argentina juega <b>3 partidos</b> en la fase de grupos.',q:'Si Argentina gana 2 partidos y empata 1, ¿cuántos puntos acumula?',answer:'7',opts:['7','6','8','5']},
-{info:'En este Mundial pasan <b>3 equipos de cada grupo</b> a la siguiente fase: los 2 primeros clasifican directo, más el mejor tercero de todos los grupos. El Grupo J tiene <b>4 equipos</b>.',q:'¿Qué fracción de equipos del Grupo J NO clasifica?',answer:'1/4',opts:['1/4','1/3','1/2','2/4']},
-{info:'Si Argentina termina <b>1° del Grupo J</b>, juega los octavos de final el <b>3 de julio en Miami</b> contra el 2° del Grupo H. El Grupo H tiene a <b>España, Uruguay, Arabia Saudita y Cabo Verde</b>.',q:'¿Cuál es la probabilidad de que el rival de Argentina en octavos sea Uruguay?',answer:'1/4',opts:['1/4','1/2','1/3','2/4']},
-{info:'Para ser <b>campeón del mundo</b>, Argentina tiene que superar: <b>3 partidos de grupos</b>, luego octavos, cuartos de final, semifinal y la gran final. Cada fase es un partido.',q:'¿Cuántos partidos en total tiene que ganar Argentina para ser campeón?',answer:'7',opts:['7','6','8','5']},
-{info:'El Arrowhead Stadium de Kansas, donde Argentina juega su <b>debut el 16 de junio</b>, tiene capacidad para <b>72.000 personas</b>. Se espera una ocupación del <b>75%</b>.',q:'¿Cuántos hinchas habrá en el estadio si la ocupación es del 75%?',answer:'54.000',opts:['54.000','62.000','48.000','58.000']},
-{info:'El AT&T Stadium de Dallas, donde Argentina juega contra <b>Austria y Jordania</b>, tiene capacidad para <b>80.000 personas</b>. Para el clásico contra Austria se espera un <b>90% de ocupación</b>.',q:'¿Cuántas personas habrá en el partido Argentina-Austria?',answer:'72.000',opts:['72.000','75.000','68.000','80.000']},
-{info:'En el Mundial 2026 participan <b>48 selecciones</b> y solo <b>1 puede ser campeón</b>. Argentina llega como el actual campeón del mundo (Qatar 2022).',q:'Si todos los equipos tuvieran las mismas posibilidades, ¿qué porcentaje de probabilidad tendría Argentina de ser campeón?',answer:'2%',opts:['2%','5%','10%','1%']},
-{info:'En Qatar 2022, Argentina hizo <b>15 goles a favor</b> y recibió <b>8 en contra</b> en los 7 partidos que jugó. La diferencia de goles es goles a favor menos goles en contra.',q:'¿Cuál fue la diferencia de goles de Argentina en Qatar 2022?',answer:'+7',opts:['+7','+6','+8','+5']},
-{info:'Argentina jugó los últimos <b>3 Mundiales</b> llegando lejos: 2014 (subcampeón, 7 partidos), 2018 (octavos, 4 partidos), 2022 (campeón, 7 partidos). Total: <b>18 partidos</b>.',q:'¿Cuál es el promedio de partidos jugados por Mundial en esos 3 torneos?',answer:'6',opts:['6','5','7','8']},
-{info:'En Qatar 2022, Argentina marcó <b>12 goles en la fase de grupos y octavos</b> (4 partidos). Messi fue el goleador con <b>7 goles</b> en todo el torneo.',q:'¿Cuál fue el promedio de goles por partido del equipo en esos 4 partidos?',answer:'3',opts:['3','2','4','2.5']},
-{info:'El Grupo J tiene a <b>Argentina (Sudamerica), Argelia (África), Austria (Europa) y Jordania (Asia)</b>. Cada equipo clasificó por su propio continente.',q:'¿De cuántos continentes distintos vienen los equipos del Grupo J?',answer:'4',opts:['4','3','2','5']},
-{info:'Argentina y <b>Brasil</b> son los dos únicos países sudamericanos campeones del mundo. Argentina ganó <b>3 veces</b> (1978, 1986, 2022) y Brasil <b>5 veces</b> (1958, 1962, 1970, 1994, 2002).',q:'¿Cuántos títulos mundiales suman Argentina y Brasil juntos?',answer:'8',opts:['8','7','9','6']},
-{info:'Argentina debuta el <b>16 de junio</b> en Kansas. Si clasifica, los octavos serán el <b>3 de julio</b>. Entre esas dos fechas, el equipo tiene días de descanso y preparación.',q:'¿Cuántos días pasan entre el debut de Argentina (16/6) y los octavos de final (3/7)?',answer:'17',opts:['17','14','20','15']},
-{info:'En el Grupo J, Argentina juega <b>3 partidos</b>. Si en promedio mete <b>2 goles por partido</b> y recibe <b>0 goles por partido</b>, al final de la fase de grupos tendría estos totales.',q:'¿Cuántos goles a favor habría hecho Argentina en los 3 partidos si mete 2 por partido?',answer:'6',opts:['6','5','7','4']},
-{info:'En el Mundial 2026 hay <b>16 equipos</b> que pasan a los octavos de final desde la fase de grupos. A partir de ahí es eliminación directa: el que pierde, se va.',q:'Si 16 equipos entran a los octavos de final, ¿cuántos partidos se juegan en esa ronda?',answer:'8',opts:['8','16','4','12']},
-{info:'Argentina jugó <b>18 Mundiales</b> en su historia y en total jugó <b>86 partidos</b>. Es una de las selecciones con más presencias en la historia del torneo.',q:'¿Cuál es el promedio de partidos por Mundial a lo largo de la historia de Argentina?',answer:'4.8',opts:['4.8','4','5','6']},
+{info:'Argentina y <b>Brasil</b> son los dos únicos países sudamericanos campeones del mundo. Argentina ganó <b>3 veces</b> (1978, 1986, 2022) y Brasil <b>5 veces</b>.',q:'¿Cuántos títulos mundiales suman Argentina y Brasil juntos?',answer:'8',opts:['8','7','9','6']},
+{info:'En el Grupo J, Argentina juega <b>3 partidos</b>. Si en promedio mete <b>2 goles por partido</b> y no recibe ninguno, al final de la fase de grupos tendría estos totales.',q:'¿Cuántos goles a favor habría hecho Argentina si mete 2 por partido en 3 partidos?',answer:'6',opts:['6','5','7','4']},
+{info:'Si Argentina gana el Grupo J y avanza hasta la final, jugaría: octavos en Miami (3/7), cuartos, semifinal y final el <b>19 de julio</b> en Nueva Jersey.',q:'Desde el debut el 16/6 hasta la final el 19/7, ¿cuántos días dura la aventura de Argentina en el Mundial?',answer:'33',opts:['33','30','35','28']},
+{info:'En Qatar 2022, Argentina marcó <b>12 goles en 4 partidos</b> durante la fase de grupos y octavos. Messi fue el goleador con <b>7 goles</b> en todo el torneo.',q:'¿Cuál fue el promedio de goles por partido del equipo en esos 4 partidos?',answer:'3',opts:['3','2','4','2.5']},
+{info:'El Grupo J tiene a <b>Argentina (Sudamérica)</b>, <b>Argelia (África)</b>, <b>Austria (Europa)</b> y <b>Jordania (Asia)</b>. Cada equipo clasificó por su propio continente.',q:'¿De cuántos continentes distintos vienen los equipos del Grupo J?',answer:'4',opts:['4','3','2','5']},
+{info:'En el Mundial 2026 hay <b>16 equipos</b> que pasan a los octavos de final desde la fase de grupos. A partir de ahí es eliminación directa: el que pierde se va.',q:'Si 16 equipos entran a los octavos, ¿cuántos partidos se juegan en esa ronda?',answer:'8',opts:['8','16','4','12']},
+{info:'Argentina jugó <b>18 Mundiales</b> en su historia y en total jugó <b>86 partidos</b>. Es una de las selecciones con más presencias mundialistas.',q:'¿Cuál es el promedio de partidos por Mundial a lo largo de la historia de Argentina? (86 ÷ 18)',answer:'4.8',opts:['4.8','4','5','6']},
+{info:'En el Mundial 2026 hay <b>48 equipos</b> en la fase de grupos. Pasan <b>3 por grupo</b> de 12 grupos, más los mejores terceros para completar 32 clasificados.',q:'Si pasan 2 equipos de cada uno de los 12 grupos, ¿cuántos equipos clasifican directamente?',answer:'24',opts:['24','32','16','20']},
 ];
-var mGs={score:0,lives:3,cur:0,answered:false,combo:1,correct:0,timerID:null,timeLeft:30,noTimer:false};var btn=document.getElementById('m-notimer-btn');if(btn){btn.textContent='⏱ Timer';btn.classList.remove('off');}
+var mGs={score:0,lives:3,cur:0,answered:false,combo:1,correct:0,timerID:null,timeLeft:30,noTimer:false};
 var mOrder=[];
 function mShuffle(arr){var a=arr.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
 function mOpts(q){return mShuffle(q.opts).map(function(v){return{key:v,html:v};});}
-function toggleMundialTimer(){
-  var btn=document.getElementById('m-notimer-btn');
-  if(!btn)return;
-  mGs.noTimer=!mGs.noTimer;
-  if(mGs.noTimer){
-    clearInterval(mGs.timerID);mGs.timerID=null;
-    document.getElementById('m-timer').style.width='100%';
-    document.getElementById('m-timer').style.background='#666';
-    document.getElementById('m-timer').style.boxShadow='none';
-    btn.textContent='⏹ Sin timer';btn.classList.add('off');
-  }else{
-    btn.textContent='⏱ Timer';btn.classList.remove('off');
-    startMTimer();
-  }
-}
-function startMundialGame(){
-  if(mGs.timerID)clearInterval(mGs.timerID);
-  mGs={score:0,lives:3,cur:0,answered:false,combo:1,correct:0,timerID:null,timeLeft:30,noTimer:false};var btn=document.getElementById('m-notimer-btn');if(btn){btn.textContent='⏱ Timer';btn.classList.remove('off');}
-  mOrder=mShuffle(MQ.map(function(_,i){return i;})).slice(0,10);
-  go('s-mundial-game');renderMQ();sndClick();playMusic();
-}
-function renderMQ(){
-  var q=MQ[mOrder[mGs.cur]];
-  document.getElementById('m-hud-n').textContent='⚽ Pregunta '+(mGs.cur+1)+'/10';
-  document.getElementById('m-hud-score').textContent=mGs.score+' pts';
-  document.getElementById('m-hud-combo').textContent='⚽ ×'+mGs.combo;
-  document.getElementById('m-hud-combo').classList.toggle('hot',mGs.combo>1);
-  var lv=document.getElementById('m-hud-lives');lv.innerHTML='';
-  for(var i=0;i<3;i++)lv.innerHTML+='<span style="opacity:'+(i<mGs.lives?1:.2)+';transition:opacity .3s">❤️</span>';
-  document.getElementById('mq-info').innerHTML=q.info;
-  document.getElementById('mq-text').textContent=q.q;
-  var og=document.getElementById('m-opts');og.innerHTML='';
-  document.getElementById('m-fb').textContent='';
-  mGs.answered=false;
-  mOpts(q).forEach(function(opt){
-    var b=document.createElement('button');b.className='opt';
-    b.innerHTML=opt.html;
-    b.onclick=function(){checkMQ(opt.key,b,q);};
-    og.appendChild(b);
-  });
-  startMTimer();
-}
-function startMTimer(){
-  if(mGs.timerID)clearInterval(mGs.timerID);
-  mGs.timeLeft=30;updMTimer();
-  mGs.timerID=setInterval(function(){mGs.timeLeft--;updMTimer();if(mGs.timeLeft<=0){clearInterval(mGs.timerID);if(!mGs.answered)mTimeout();}},1000);
-}
+function toggleMundialTimer(){var btn=document.getElementById('m-notimer-btn');if(!btn)return;mGs.noTimer=!mGs.noTimer;if(mGs.noTimer){clearInterval(mGs.timerID);mGs.timerID=null;document.getElementById('m-timer').style.width='100%';document.getElementById('m-timer').style.background='#666';document.getElementById('m-timer').style.boxShadow='none';btn.textContent='⏹ Sin timer';btn.classList.add('off');}else{btn.textContent='⏱ Timer';btn.classList.remove('off');startMTimer();}}
+function startMundialGame(){if(mGs.timerID)clearInterval(mGs.timerID);mGs={score:0,lives:3,cur:0,answered:false,combo:1,correct:0,timerID:null,timeLeft:30,noTimer:false};var btn=document.getElementById('m-notimer-btn');if(btn){btn.textContent='⏱ Timer';btn.classList.remove('off');}mOrder=mShuffle(MQ.map(function(_,i){return i;})).slice(0,10);go('s-mundial-game');renderMQ();sndClick();playMusic();}
+function renderMQ(){var q=MQ[mOrder[mGs.cur]];document.getElementById('m-hud-n').textContent='⚽ Pregunta '+(mGs.cur+1)+'/10';document.getElementById('m-hud-score').textContent=mGs.score+' pts';document.getElementById('m-hud-combo').textContent='⚽ ×'+mGs.combo;document.getElementById('m-hud-combo').classList.toggle('hot',mGs.combo>1);var lv=document.getElementById('m-hud-lives');lv.innerHTML='';for(var i=0;i<3;i++)lv.innerHTML+='<span style="opacity:'+(i<mGs.lives?1:.2)+';transition:opacity .3s">❤️</span>';document.getElementById('mq-info').innerHTML=q.info;document.getElementById('mq-text').textContent=q.q;var og=document.getElementById('m-opts');og.innerHTML='';document.getElementById('m-fb').textContent='';mGs.answered=false;mOpts(q).forEach(function(opt){var b=document.createElement('button');b.className='opt';b.innerHTML=opt.html;b.onclick=function(){checkMQ(opt.key,b,q);};og.appendChild(b);});startMTimer();}
+function startMTimer(){if(mGs.timerID)clearInterval(mGs.timerID);if(mGs.noTimer){document.getElementById('m-timer').style.width='100%';document.getElementById('m-timer').style.background='#666';document.getElementById('m-timer').style.boxShadow='none';return;}mGs.timeLeft=30;updMTimer();mGs.timerID=setInterval(function(){mGs.timeLeft--;updMTimer();if(mGs.timeLeft<=0){clearInterval(mGs.timerID);if(!mGs.answered)mTimeout();}},1000);}
 function updMTimer(){var pct=mGs.timeLeft/30*100;var fill=document.getElementById('m-timer');if(!fill)return;fill.style.width=pct+'%';fill.style.background=pct>50?'#ffd700':pct>25?'#ff9500':'#ff4444';fill.style.boxShadow='0 0 6px '+(pct>50?'#ffd700':pct>25?'#ff9500':'#ff4444');}
-function mTimeout(){
-  mGs.answered=true;mGs.combo=1;mGs.lives--;
-  document.getElementById('m-fb').textContent='⏰ ¡Tiempo! Era: '+MQ[mOrder[mGs.cur]].answer;
-  document.getElementById('m-fb').className='fb no';
-  document.querySelectorAll('#m-opts .opt').forEach(function(b){if(b.innerHTML===MQ[mOrder[mGs.cur]].answer)b.classList.add('show');});
-  updMLives();sndTimeout();
-  setTimeout(function(){mGs.cur++;if(mGs.lives<=0||mGs.cur>=10)showMResult();else renderMQ();},1400);
-}
-function checkMQ(key,btn,q){
-  if(mGs.answered)return;
-  mGs.answered=true;clearInterval(mGs.timerID);
-  var ok=key===q.answer;
-  var fb=document.getElementById('m-fb');
-  if(ok){
-    btn.classList.add('hit');mGs.correct++;mGs.combo=Math.min(mGs.combo+1,8);
-    var pts=10*mGs.combo;mGs.score+=pts;totalXP+=pts;
-    fb.textContent='⚽ ¡Correcto! +'+pts+' pts';fb.className='fb ok';
-    var el=document.createElement('div');el.style.cssText='position:fixed;top:40%;left:50%;transform:translate(-50%,-50%);font-size:50px;z-index:300;animation:ptsUp 1s ease forwards;pointer-events:none;';el.textContent='⚽';document.body.appendChild(el);setTimeout(function(){el.remove();},1000);
-    if(mGs.combo>=3)sndCombo(mGs.combo);else sndCorrect();
-    checkXPBadges();
-  }else{
-    btn.classList.add('miss');mGs.lives--;mGs.combo=1;updMLives();
-    document.querySelectorAll('#m-opts .opt').forEach(function(b){if(b.innerHTML===q.answer)b.classList.add('show');});
-    fb.textContent='❌ La respuesta es: '+q.answer;fb.className='fb no';sndWrong();
-  }
-  document.getElementById('m-hud-combo').textContent='⚽ ×'+mGs.combo;
-  document.getElementById('m-hud-combo').classList.toggle('hot',mGs.combo>1);
-  setTimeout(function(){mGs.cur++;if(mGs.lives<=0||mGs.cur>=10)showMResult();else renderMQ();},1400);
-}
+function mTimeout(){mGs.answered=true;mGs.combo=1;mGs.lives--;document.getElementById('m-fb').textContent='⏰ ¡Tiempo! Era: '+MQ[mOrder[mGs.cur]].answer;document.getElementById('m-fb').className='fb no';document.querySelectorAll('#m-opts .opt').forEach(function(b){if(b.innerHTML===MQ[mOrder[mGs.cur]].answer)b.classList.add('show');});updMLives();sndTimeout();setTimeout(function(){mGs.cur++;if(mGs.lives<=0||mGs.cur>=10)showMResult();else renderMQ();},1400);}
+function checkMQ(key,btn,q){if(mGs.answered)return;mGs.answered=true;clearInterval(mGs.timerID);var ok=key===q.answer;var fb=document.getElementById('m-fb');if(ok){btn.classList.add('hit');mGs.correct++;mGs.combo=Math.min(mGs.combo+1,8);var pts=10*mGs.combo;mGs.score+=pts;totalXP+=pts;fb.textContent='⚽ ¡Correcto! +'+pts+' pts';fb.className='fb ok';var el=document.createElement('div');el.style.cssText='position:fixed;top:40%;left:50%;transform:translate(-50%,-50%);font-size:50px;z-index:300;animation:ptsUp 1s ease forwards;pointer-events:none;';el.textContent='⚽';document.body.appendChild(el);setTimeout(function(){el.remove();},1000);if(mGs.combo>=3)sndCombo(mGs.combo);else sndCorrect();checkXPBadges();}else{btn.classList.add('miss');mGs.lives--;mGs.combo=1;updMLives();document.querySelectorAll('#m-opts .opt').forEach(function(b){if(b.innerHTML===q.answer)b.classList.add('show');});fb.textContent='❌ La respuesta es: '+q.answer;fb.className='fb no';sndWrong();}document.getElementById('m-hud-combo').textContent='⚽ ×'+mGs.combo;document.getElementById('m-hud-combo').classList.toggle('hot',mGs.combo>1);setTimeout(function(){mGs.cur++;if(mGs.lives<=0||mGs.cur>=10)showMResult();else renderMQ();},1400);}
 function updMLives(){document.getElementById('m-hud-lives').querySelectorAll('span').forEach(function(s,i){s.style.opacity=i<mGs.lives?1:.2;});}
-function showMResult(){
-  if(mGs.timerID)clearInterval(mGs.timerID);stopMusic();
-  var pct=Math.round(mGs.correct/10*100);
-  document.getElementById('mr-emoji').textContent=pct>=90?'🏆':pct>=70?'⭐':pct>=50?'👍':'💪';
-  document.getElementById('mr-title').textContent=pct>=90?'¡Campeón del Mundo!':pct>=70?'¡Gran partido!':pct>=50?'¡Buen intento!':'¡A entrenar más!';
-  document.getElementById('mr-score').textContent=mGs.correct+'/10';
-  document.getElementById('mr-sub').textContent=mGs.score+' puntos · '+pct+'% correcto';
-  updateXPBar();if(pct>=70)confetti();
-  go('s-mundial-result');
-}
+function showMResult(){if(mGs.timerID)clearInterval(mGs.timerID);stopMusic();var pct=Math.round(mGs.correct/10*100);document.getElementById('mr-emoji').textContent=pct>=90?'🏆':pct>=70?'⭐':pct>=50?'👍':'💪';document.getElementById('mr-title').textContent=pct>=90?'¡Campeón del Mundo!':pct>=70?'¡Gran partido!':pct>=50?'¡Buen intento!':'¡A entrenar más!';document.getElementById('mr-score').textContent=mGs.correct+'/10';document.getElementById('mr-sub').textContent=mGs.score+' puntos · '+pct+'% correcto';updateXPBar();if(pct>=70)confetti();go('s-mundial-result');}
 function abortMundial(){if(mGs.timerID)clearInterval(mGs.timerID);stopMusic();go('s-home');}
 </script>
 
-  <!-- MUNDIAL JUEGO -->
   <div class="scr" id="s-mundial-game">
     <button class="back-btn" onclick="abortMundial()">← Salir</button>
     <div class="mundial-hud">
@@ -2014,7 +1997,6 @@ function abortMundial(){if(mGs.timerID)clearInterval(mGs.timerID);stopMusic();go
       </div>
     </div>
   </div>
-  <!-- MUNDIAL RESULTADO -->
   <div class="scr" id="s-mundial-result">
     <div style="padding:.5rem 1rem 2rem;">
       <div class="mr-panel">
