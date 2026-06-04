@@ -970,7 +970,7 @@ function adaptDifficulty(wasCorrect){
       updateDiffPill();
       showDiffToast(true);
       if(gs.diff>=5) unlockBadge('diff5');
-    if(gs.lv>=6&&stars>=2) unlockBadge('extreme');
+    if(gs.lv>=6&&stars>=1) unlockBadge('extreme');
     }
   } else {
     gs.consecutiveWrong++;
@@ -1199,9 +1199,9 @@ function showResult(){
 
   if(unlocked&&nextLv<=ML){
     rb.className='rec-box go-up';ri.textContent='🚀';
-    rt.textContent='¡Nivel '+nextLv+' desbloqueado!';
-    rd.textContent=stars===3?'¡Resultado perfecto! Avanzás al siguiente nivel.':'Con '+gs.correct+' correctas desbloqueaste el Nivel '+nextLv+'. ¡A seguir!';
-    actions.innerHTML='<button class="btn-gg" onclick="startGame('+nextLv+',false)">🚀 ¡Ir al Nivel '+nextLv+'!</button>'
+    rt.textContent=nextLv===ML?'💎 ¡NIVEL EXTREMO DESBLOQUEADO!':'¡Nivel '+nextLv+' desbloqueado!';
+    rd.textContent=nextLv===ML?'¡Superaste todos los niveles! El Nivel Extremo es el desafío máximo. ¿Te animás?':(stars===3?'¡Resultado perfecto! Avanzás al siguiente nivel.':'Con '+gs.correct+' correctas desbloqueaste el Nivel '+nextLv+'. ¡A seguir!');
+    actions.innerHTML='<button class="btn-gg" onclick="startGame('+nextLv+',false)">'+(nextLv===ML?'💎 ¡Ir al Nivel Extremo!':'🚀 ¡Ir al Nivel '+nextLv+'!')+'</button>'
       +'<button class="btn-sec" onclick="startGame('+sameLv+',false)">Repetir Nivel '+sameLv+'</button>'
       +'<button class="btn-sec" onclick="go(\'s-dash\')">🏠 Dashboard</button>';
   } else if(stars>=1&&gs.lv<p.ml){
@@ -1212,11 +1212,11 @@ function showResult(){
       +'<button class="btn-sec" onclick="startGame('+sameLv+',false)">Repetir este nivel</button>'
       +'<button class="btn-sec" onclick="go(\'s-dash\')">Dashboard</button>';
   } else if(stars>=1&&gs.lv===ML){
-    rb.className='rec-box challenge';ri.textContent='🏆';
-    rt.textContent='¡Dominaste este tema!';
-    rd.textContent='Llegaste al nivel máximo. ¡Sos un crack! Probá otro tema.';
-    actions.innerHTML='<button class="btn-pp" onclick="go(\'s-dash\')">🏆 Ver Dashboard</button>'
-      +'<button class="btn-sec" onclick="startGame('+sameLv+',false)">Jugar de nuevo</button>';
+    rb.className='rec-box challenge';ri.textContent='💎';
+    rt.textContent=gs.lv===ML?'💎 ¡Completaste el Nivel Extremo!':'¡Dominaste este tema!';
+    rd.textContent='¡Llegaste al máximo de este tema! Sos un crack. Intentá mejorar tu puntaje o probá otro tema.';
+    actions.innerHTML='<button class="btn-pp" onclick="go(\'s-dash\')">💎 Ver Dashboard</button>'
+      +'<button class="btn-sec" onclick="startGame('+sameLv+',false)">🔄 Repetir Extremo</button>';
   } else if(stars===0&&p.badStreak>=2){
     rb.className='rec-box go-down';ri.textContent='💙';
     rt.textContent='Repasemos desde la base';
