@@ -780,7 +780,11 @@ function makeQ(g, topic, lv, idx, easy, diff){
       answer=rn+'/'+rd;
       q=frac(n1,d1)+' × '+frac(n2,d2)+' = ?';
       let ws6=new Set([answer]); let tr6=0;
-      while(ws6.size<4&&tr6++<80){let wn=rnd(1,rd*2+1),wd=rnd(2,rd+3);let wg=gcd(wn,wd);ws6.add((wn/wg)+'/'+(wd/wg));}
+      while(ws6.size<4&&tr6++<80){
+        let wn=rnd(1,rd*2+1),wd=rnd(2,rd+3),wg=gcd(wn,wd);
+        let wsn=wn/wg,wsd=wd/wg;
+        if(wsn/wsd!==rn/rd) ws6.add(wsn+'/'+wsd);
+      }
       opts=Array.from(ws6).map(s=>{let[n,d]=s.split('/').map(Number);return{key:s,html:frac(n,d)};}).sort(()=>Math.random()-.5);
     } else {
       let den=easy?rnd(2,2+ediff):rnd(2,3+ediff*2), rn, rd;
@@ -798,7 +802,11 @@ function makeQ(g, topic, lv, idx, easy, diff){
       }
       answer=rn+'/'+rd;
       let ws=new Set([answer]);let tr=0;
-      while(ws.size<4&&tr<80){tr++;let wn=rnd(1,den*2),wd=rnd(2,den+2);let wg2=gcd(wn,wd);ws.add((wn/wg2)+'/'+(wd/wg2));}
+      while(ws.size<4&&tr<80){
+        tr++;let wn=rnd(1,den*2),wd=rnd(2,den+2),wg2=gcd(wn,wd);
+        let wsn=wn/wg2,wsd=wd/wg2;
+        if(wsn/wsd!==rn/rd) ws.add(wsn+'/'+wsd);
+      }
       opts=Array.from(ws).map(s=>{let[n,d]=s.split('/').map(Number);return{key:s,html:frac(n,d)};}).sort(()=>Math.random()-.5);
     }
   } else if(topic==='decimales'){
